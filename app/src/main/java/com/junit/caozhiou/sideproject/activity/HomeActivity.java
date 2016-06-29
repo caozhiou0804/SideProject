@@ -40,7 +40,7 @@ public class HomeActivity extends BaseFragmentActivity {
 //        if (getFragmentByTag(LeftFragment.class) == null) {
 //            getSupportFragmentManager().beginTransaction().add(R.id.left_frame, new LeftFragment(), LeftFragment.class.getName()).commit();
 //        }
-
+//
         mSlidingMenu.setContent(R.layout.sliding_center_frame);
 
         mSlidingMenu.setSecondaryMenu(R.layout.sliding_right_frame);
