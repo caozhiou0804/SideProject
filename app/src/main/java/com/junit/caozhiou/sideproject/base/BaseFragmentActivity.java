@@ -19,7 +19,6 @@ import android.view.View.OnClickListener;
 public abstract class BaseFragmentActivity extends FragmentActivity {
 
 
-    protected abstract View getParentView();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
