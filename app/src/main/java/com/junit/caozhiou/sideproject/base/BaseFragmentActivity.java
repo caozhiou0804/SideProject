@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
+import android.view.View;
 import android.view.View.OnClickListener;
 
 /**
@@ -15,8 +16,10 @@ import android.view.View.OnClickListener;
  *
  * @author lubote
  */
-public class BaseFragmentActivity extends FragmentActivity {
+public abstract class BaseFragmentActivity extends FragmentActivity {
 
+
+    protected abstract View getParentView();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -26,6 +26,11 @@ public class SplashActivity extends BaseFragmentActivity {
     private CharacterParser characterParser;
 
     @Override
+    protected View getParentView() {
+        return null;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
@@ -48,8 +53,9 @@ public class SplashActivity extends BaseFragmentActivity {
 //    private Handler intentHandler = new Handler();
 
     private void playVedio() {
-        String path = Environment.getExternalStorageDirectory() + "/DCIM/Camera/test.mp4";
+//        String path = Environment.getExternalStorageDirectory() + "/DCIM/Camera/test.mp4";
 
+        String path = " http://movie.ks.js.cn/flv/other/1_0.mp4";
         if (path == "") {
             // Tell the user to provide a media file URL/path.
             Toast.makeText(SplashActivity.this, "Please edit VideoViewDemo Activity, and set path" + " variable to your media file URL/path", Toast.LENGTH_LONG).show();

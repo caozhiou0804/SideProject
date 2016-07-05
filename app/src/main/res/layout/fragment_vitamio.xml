@@ -1,7 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/btn_go_to_tv"
@@ -9,5 +10,10 @@
         android:layout_margin="10dp"
         android:layout_height="wrap_content"
         android:text="走，去看视频" />
-
-</RelativeLayout>
+    <Button
+        android:id="@+id/btn_go_video_list"
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:text="多个视频等你哦" />
+</LinearLayout>
