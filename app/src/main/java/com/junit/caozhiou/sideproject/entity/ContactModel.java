@@ -31,9 +31,6 @@ package com.junit.caozhiou.sideproject.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by jiang on 16/2/2.
- */
 public class ContactModel {
     private CreaterEntity creater;
 
