@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.junit.caozhiou.sideproject.R;
@@ -30,6 +31,7 @@ import com.junit.caozhiou.sideproject.activity.PlayVideoListActivity;
 import com.junit.caozhiou.sideproject.activity.SplashActivity;
 import com.junit.caozhiou.sideproject.entity.ScreenBean;
 import com.junit.caozhiou.sideproject.util.LocUtil;
+import com.junit.caozhiou.sideproject.view.SwipeItemLayout;
 
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.Vitamio;
@@ -42,6 +44,8 @@ public class VitamioFragment extends Fragment {
     private Button btn_go_to_tv;
     private Button btn_go_video_list;
     private ScreenBean screenBean;
+    private SwipeItemLayout item_contact_swipe_root;
+    private TextView tv_delete, tv_share;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +67,7 @@ public class VitamioFragment extends Fragment {
 
         Vitamio.isInitialized(getActivity());
         btn_go_to_tv = (Button) contentView.findViewById(R.id.btn_go_to_tv);
-        btn_go_video_list = (Button) contentView.findViewById(R.id.btn_go_to_tv);
+        btn_go_video_list = (Button) contentView.findViewById(R.id.btn_go_video_list);
         btn_go_to_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +82,50 @@ public class VitamioFragment extends Fragment {
                 startActivity(intent_list);
             }
         });
+
+        item_contact_swipe_root = (SwipeItemLayout) contentView.findViewById(R.id.item_contact_swipe_root);
+
+        item_contact_swipe_root.setSwipeAble(true);
+        item_contact_swipe_root.setDelegate(new SwipeItemLayout.SwipeItemLayoutDelegate() {
+            @Override
+            public void onSwipeItemLayoutOpened(SwipeItemLayout swipeItemLayout) {
+//                closeOpenedSwipeItemLayoutWithAnim();
+//                mOpenedSil.add(swipeItemLayout);
+            }
+
+            @Override
+            public void onSwipeItemLayoutClosed(SwipeItemLayout swipeItemLayout) {
+//                mOpenedSil.remove(swipeItemLayout);
+            }
+
+            @Override
+            public void onSwipeItemLayoutStartOpen(SwipeItemLayout swipeItemLayout) {
+//                closeOpenedSwipeItemLayoutWithAnim();
+            }
+        });
+
+        tv_delete = (TextView) contentView.findViewById(R.id.tv_delete);
+        tv_share = (TextView) contentView.findViewById(R.id.tv_share);
+
+        tv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "不想离开你哦!", Toast.LENGTH_LONG).show();
+
+                closeOpenedSwipeItemLayoutWithAnim();
+            }
+        });
+        tv_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "你要把我分享给谁？", Toast.LENGTH_LONG).show();
+                closeOpenedSwipeItemLayoutWithAnim();
+
+            }
+        });
     }
 
+    public void closeOpenedSwipeItemLayoutWithAnim() {
+        item_contact_swipe_root.closeWithAnim();
+    }
 }
