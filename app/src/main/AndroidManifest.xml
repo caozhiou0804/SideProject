@@ -29,13 +29,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.HomeActivity" />
+        <activity
+            android:name=".activity.HomeActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.PlayVideoActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.PlayVideoListActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -17,7 +17,7 @@ import java.util.List;
  * :使用google支持库实现Tab标签
  */
 public class TabInfoFragment extends Fragment {
-    private String[] titles = new String[]{"普通recyclerView", "下拉刷新", "瀑布流", "grid拖拽", "list拖拽", "企业服务", "Fit&Health", "在线教育", "互联网金融", "大公司", "专栏", "新产品"};
+    private String[] titles = new String[]{"普通recyclerView", "下拉刷新", "瀑布流", "grid拖拽", "list拖拽", "PinnedHeader", "Fit&Health", "在线教育", "互联网金融", "大公司", "专栏", "新产品"};
     private View mView;
     private TabLayout tab_layout;
     private ViewPager info_viewpager;
@@ -72,7 +72,10 @@ public class TabInfoFragment extends Fragment {
                     RecyclerListFragment recyclerListFragment = new RecyclerListFragment();
                     fragments.add(recyclerListFragment);
                     break;
-
+                case 5:
+                    PinnedHeaderRecyclerViewFragment pinnedHeaderRecyclerViewFragment = new PinnedHeaderRecyclerViewFragment();
+                    fragments.add(pinnedHeaderRecyclerViewFragment);
+                    break;
                 default:
                     OneFragment oneFragment = new OneFragment();
                     Bundle bundle = new Bundle();

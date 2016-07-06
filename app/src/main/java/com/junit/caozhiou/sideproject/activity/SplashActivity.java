@@ -2,15 +2,13 @@ package com.junit.caozhiou.sideproject.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
 import com.junit.caozhiou.sideproject.R;
 import com.junit.caozhiou.sideproject.base.BaseFragmentActivity;
-import com.junit.caozhiou.sideproject.util.CharacterParser;
+import com.junit.caozhiou.sideproject.util.pinyin.CharacterParser;
 
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.Vitamio;
@@ -24,11 +22,6 @@ public class SplashActivity extends BaseFragmentActivity {
 
     // 汉子转换成拼音
     private CharacterParser characterParser;
-
-    @Override
-    protected View getParentView() {
-        return null;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

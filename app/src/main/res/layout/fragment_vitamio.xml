@@ -7,13 +7,72 @@
     <Button
         android:id="@+id/btn_go_to_tv"
         android:layout_width="match_parent"
-        android:layout_margin="10dp"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="走，去看视频" />
+
     <Button
         android:id="@+id/btn_go_video_list"
         android:layout_width="match_parent"
-        android:layout_margin="10dp"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="多个视频等你哦" />
+
+    <com.junit.caozhiou.sideproject.view.SwipeItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/item_contact_swipe_root"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/pink_color"
+        app:bga_sil_bottomMode="pullOut"
+        app:bga_sil_springDistance="20dp"
+        app:bga_sil_swipeDirection="left">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_share"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/androidColorD"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="分享"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryDark"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:text="删除"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/item_contact_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:text="向左滑动有惊喜哦"
+                android:textColor="@android:color/black"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+    </com.junit.caozhiou.sideproject.view.SwipeItemLayout>
 </LinearLayout>

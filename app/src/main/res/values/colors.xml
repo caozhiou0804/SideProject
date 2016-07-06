@@ -41,6 +41,9 @@
     <color name="colorAccent">#1da8fe</color>
     <!--粉色-->
     <color name="pink_color">#e4aaaa</color>
-
-
+    <!--sidebar-->
+    <color name="side_bar_text">#4A4A4A</color>
+    <color name="shadow_bg">#66000000</color>
+    <color name="edit_bg">#EFEFF4</color>
+    <color name="darker_gray">#9b9b9b</color>
 </resources>
