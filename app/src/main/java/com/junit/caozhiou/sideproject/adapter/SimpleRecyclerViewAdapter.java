@@ -124,7 +124,6 @@ private int time;
             playVideo(position, holder);
         }
         holder.itemView.setTag(position);
-
 //        startTranslateFromBottom(holder.v);
     }
 
