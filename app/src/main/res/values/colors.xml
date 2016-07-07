@@ -8,6 +8,8 @@
     <color name="black">#000000</color>
     <color name="middle_red">#e7abff</color>
     <color name="color_nav">#FFFFD9</color>
+    <color name="yellow">#FFF7D23E</color>
+    <color name="green">#FF34A350</color>
     <!-- androidColor -->
     <color name="androidColorA">#33B5E5</color>
     <color name="androidColorB">#AA66CC</color>
@@ -30,7 +32,6 @@
     <color name="color_9">#00EE00</color>
     <color name="color_10">#708090</color>
 
-
     <!--标签TAB未选中的颜色-->
     <color name="color_unselected">#777777</color>
     <!--标签Tab选中的颜色-->
@@ -46,4 +47,23 @@
     <color name="shadow_bg">#66000000</color>
     <color name="edit_bg">#EFEFF4</color>
     <color name="darker_gray">#9b9b9b</color>
+    <color name="grey">#994d4d4d</color>
+    <!--swipe-->
+    <color name="bg_swipe_item_neutral">#ffffffff</color>
+    <color name="bg_swipe_item_left">#fff9930d</color>
+    <color name="bg_swipe_item_right">#ff2f8b2a</color>
+    <color name="bg_swipe_group_item_left">#fff45f30</color>
+    <color name="bg_swipe_group_item_right">#ff295db3</color>
+    <color name="bg_item_normal_state">#fff0f0f0</color>
+    <color name="bg_item_normal_pressed_state">#ffe0e0e0</color>
+    <color name="bg_item_swiping_state">#ffddddff</color>
+    <color name="bg_item_swiping_active_state">#ff9999ff</color>
+    <color name="bg_item_dragging_state">#ffffdddd</color>
+    <color name="bg_item_dragging_active_state">#ffff9999</color>
+    <color name="button_d_active">#5d1c23</color>
+    <color name="button_d_normal">#793042</color>
+
+    <color name="primaryDark">#00796b</color>
+    <color name="backgroundColor">@color/background_material_dark</color>
+    <color name="backgroundColorPress">@color/accent_material_dark</color>
 </resources>

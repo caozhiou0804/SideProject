@@ -1,8 +1,5 @@
 package com.junit.caozhiou.sideproject.fragment;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -72,7 +69,7 @@ public class HomeCenterFragment extends Fragment {
     }
 
     private void initData() {
-        String[] titles = new String[]{"RecyclerView", "Vitamio", "我"};
+        String[] titles = new String[]{"RecyclerView", "多功能", "我"};
         fragments = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             OneFragment oneFragment = new OneFragment();
@@ -82,7 +79,7 @@ public class HomeCenterFragment extends Fragment {
             if (i == 0) {
                 fragments.add(new TabInfoFragment());
             } else if(i==1){
-                fragments.add(new VitamioFragment());
+                fragments.add(new FunctionsFragment());
             }
             else{
                 fragments.add(oneFragment);
