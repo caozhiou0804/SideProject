@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.junit.caozhiou.sideproject.R;
+import com.junit.caozhiou.sideproject.util.MyDialog;
 import com.junit.caozhiou.sideproject.view.SwipeItemLayout;
 
 import java.util.ArrayList;
@@ -76,9 +77,30 @@ public class SwipeRecyclerViewAdapter1 extends RecyclerView.Adapter<SwipeRecycle
             @Override
             public void onClick(View v) {
 //                datas.remove(datas.get(position));
-                deleteItemListener.deleteItem(position);
-                notifyDataSetChanged();
-                Toast.makeText(ctx, position + "", Toast.LENGTH_LONG).show();
+                final MyDialog dialog = new MyDialog(ctx);
+                dialog.onButton1Listener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        // TODO Auto-generated method stub
+                        dialog.dismiss();
+                        deleteItemListener.deleteItem(position);
+                        notifyDataSetChanged();
+                        Toast.makeText(ctx, position + "", Toast.LENGTH_LONG).show();
+                    }
+                });
+                dialog.onButton2Listener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        // TODO Auto-generated method stub
+                        dialog.dismiss();
+                    }
+                });
+                if (null != dialog)
+                    dialog.show();
+
+
             }
         });
     }
