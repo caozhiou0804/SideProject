@@ -8,10 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.junit.caozhiou.sideproject.R;
-import com.junit.caozhiou.sideproject.activity.FiveColorChangingTabsActivity;
 import com.junit.caozhiou.sideproject.activity.PlayVideoActivity;
 import com.junit.caozhiou.sideproject.activity.PlayVideoListActivity;
 import com.junit.caozhiou.sideproject.activity.SwipeRecyclerViewActivity;
@@ -19,7 +17,6 @@ import com.junit.caozhiou.sideproject.activity.WelcomeActivity;
 import com.junit.caozhiou.sideproject.entity.ScreenBean;
 import com.junit.caozhiou.sideproject.view.SwipeItemLayout;
 
-import io.vov.vitamio.Vitamio;
 
 public class FunctionsFragment extends Fragment {
 
@@ -48,7 +45,6 @@ public class FunctionsFragment extends Fragment {
 
     private void initView() {
 
-        Vitamio.isInitialized(getActivity());
         btn_go_to_tv = (Button) contentView.findViewById(R.id.btn_go_to_tv);
         btn_go_video_list = (Button) contentView.findViewById(R.id.btn_go_video_list);
         btn_go_to_tv.setOnClickListener(new View.OnClickListener() {

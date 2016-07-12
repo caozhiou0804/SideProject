@@ -70,7 +70,9 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<SimpleRecycl
         this.onRecyclerItemClickListener = onRecyclerItemClickListener;
 //        Vitamio.isInitialized(context);
     }
-private int time;
+
+    private int time;
+
     /**
      * item显示类型
      *
@@ -84,7 +86,7 @@ private int time;
         //这边可以做一些属性设置，甚至事件监听绑定
         //view.setBackgroundColor(Color.RED);
         time++;
-        Log.d("onCreateViewHolder","加载"+time+"次");
+        Log.d("onCreateViewHolder", "加载" + time + "次");
         ViewHolder viewHolder = new ViewHolder(view);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +111,7 @@ private int time;
     private int playPosition = -1;
     private boolean isPaused = false;
     private boolean isPlaying = false;
+
     /**
      * 数据的绑定显示
      *
@@ -117,7 +120,7 @@ private int time;
      */
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        Log.d("onBindViewHolder","加载"+time+"次");
+        Log.d("onBindViewHolder", "加载" + time + "次");
         if (null != videoDatas && videoDatas.size() > 0) {
 //            holder.tv_video_title.setText(videoDatas.get(position).getVideoTitle());
 //            holder.tv_video_time.setText(videoDatas.get(position).getVideoTime());

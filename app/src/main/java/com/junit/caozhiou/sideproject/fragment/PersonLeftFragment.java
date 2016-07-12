@@ -14,11 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.junit.caozhiou.sideproject.R;
-import com.junit.caozhiou.sideproject.activity.FiveColorChangingTabsActivity;
-import com.junit.caozhiou.sideproject.activity.PlayVideoActivity;
-import com.junit.caozhiou.sideproject.activity.PlayVideoListActivity;
-import com.junit.caozhiou.sideproject.activity.SwipeRecyclerViewActivity;
-import com.junit.caozhiou.sideproject.activity.WelcomeActivity;
 import com.junit.caozhiou.sideproject.adapter.PersonalSettingAdapter;
 import com.junit.caozhiou.sideproject.entity.PersonalSettingData;
 import com.junit.caozhiou.sideproject.entity.ScreenBean;
@@ -26,8 +21,6 @@ import com.junit.caozhiou.sideproject.view.SwipeItemLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.vov.vitamio.Vitamio;
 
 public class PersonLeftFragment extends Fragment {
 

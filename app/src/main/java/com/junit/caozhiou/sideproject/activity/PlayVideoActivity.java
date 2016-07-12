@@ -1,17 +1,11 @@
 package com.junit.caozhiou.sideproject.activity;
 
-import io.vov.vitamio.MediaPlayer;
-import io.vov.vitamio.utils.Log;
-import io.vov.vitamio.widget.MediaController;
-import io.vov.vitamio.widget.VideoView;
 
-
-import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Display;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -21,9 +15,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.Toast;
-import android.app.Activity;
-import android.content.Context;
+import android.widget.VideoView;
 
 import com.junit.caozhiou.sideproject.R;
 import com.junit.caozhiou.sideproject.base.BaseFragmentActivity;
@@ -86,7 +80,7 @@ public class PlayVideoActivity extends BaseFragmentActivity {
                     .setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
                         public void onPrepared(MediaPlayer mediaPlayer) {
-                            mediaPlayer.setPlaybackSpeed(1.0f);
+//                            mediaPlayer.setPlaybackSpeed(1.0f);
                         }
                     });
         }
@@ -131,7 +125,7 @@ public class PlayVideoActivity extends BaseFragmentActivity {
      * 视频缩放
      */
     public void changeLayout(int size) {
-        mVideoView.setVideoLayout(size, 0);
+//        mVideoView.setVideoLayout(size, 0);
     }
 
     /**
@@ -213,7 +207,7 @@ public class PlayVideoActivity extends BaseFragmentActivity {
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                                float velocityY) {
             // TODO Auto-generated method stub
-            Log.d("Fling", velocityY);
+            Log.d("Fling", velocityY+"");
             return false;
         }
 
