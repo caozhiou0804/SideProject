@@ -1,5 +1,8 @@
 package com.junit.caozhiou.sideproject.util;
 
+import android.os.Environment;
+
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -65,4 +68,20 @@ public class FileUtil {
 		}
 		return null;
 	}
+	public static String getExternCachePath() {
+		String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+		if (path != null) {
+			path += "/czo/base.demo/cache/";
+			File file = new File(path);
+			if (!file.exists()) {
+				if (file.mkdirs()) {
+					return path;
+				}
+			} else {
+				return path;
+			}
+		}
+		return null;
+	}
+
 }

@@ -48,6 +48,7 @@
     <color name="edit_bg">#EFEFF4</color>
     <color name="darker_gray">#9b9b9b</color>
     <color name="grey">#994d4d4d</color>
+    <color name="gray_bg">#e5e5e5</color>
     <!--swipe-->
     <color name="bg_swipe_item_neutral">#ffffffff</color>
     <color name="bg_swipe_item_left">#fff9930d</color>

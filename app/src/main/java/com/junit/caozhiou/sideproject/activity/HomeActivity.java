@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import com.junit.caozhiou.sideproject.R;
 import com.junit.caozhiou.sideproject.base.BaseFragmentActivity;
 import com.junit.caozhiou.sideproject.fragment.HomeCenterFragment;
+import com.junit.caozhiou.sideproject.fragment.PersonLeftFragment;
 import com.junit.caozhiou.sideproject.fragment.TabInfoFragment;
 import com.junit.caozhiou.sideproject.view.SlidingMenu;
 
@@ -25,7 +26,7 @@ public class HomeActivity extends BaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
 //        tabInfoFragment = new TabInfoFragment();
         homeCenterFragment = new HomeCenterFragment();
@@ -37,10 +38,8 @@ public class HomeActivity extends BaseFragmentActivity {
     private void initSlidingMenu() {
         mSlidingMenu = (SlidingMenu) findViewById(R.id.slidingmenu);
         mSlidingMenu.setMenu(R.layout.sliding_left_frame);
-//        if (getFragmentByTag(LeftFragment.class) == null) {
-//            getSupportFragmentManager().beginTransaction().add(R.id.left_frame, new LeftFragment(), LeftFragment.class.getName()).commit();
-//        }
-//
+        getSupportFragmentManager().beginTransaction().add(R.id.left_frame, new PersonLeftFragment()).commit();
+
         mSlidingMenu.setContent(R.layout.sliding_center_frame);
 
         mSlidingMenu.setSecondaryMenu(R.layout.sliding_right_frame);

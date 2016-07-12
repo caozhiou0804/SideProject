@@ -15,6 +15,7 @@ import com.junit.caozhiou.sideproject.activity.FiveColorChangingTabsActivity;
 import com.junit.caozhiou.sideproject.activity.PlayVideoActivity;
 import com.junit.caozhiou.sideproject.activity.PlayVideoListActivity;
 import com.junit.caozhiou.sideproject.activity.SwipeRecyclerViewActivity;
+import com.junit.caozhiou.sideproject.activity.WelcomeActivity;
 import com.junit.caozhiou.sideproject.entity.ScreenBean;
 import com.junit.caozhiou.sideproject.view.SwipeItemLayout;
 
@@ -100,7 +101,7 @@ public class FunctionsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 closeOpenedSwipeItemLayoutWithAnim();
-                startActivity(new Intent(getActivity(), FiveColorChangingTabsActivity.class));
+                startActivity(new Intent(getActivity(), WelcomeActivity.class));
 
             }
         });

@@ -15,6 +15,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name=".app.MyApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
@@ -39,7 +40,8 @@
             android:name=".activity.PlayVideoListActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.SwipeRecyclerViewActivity" />
-        <activity android:name=".activity.FiveColorChangingTabsActivity"></activity>
+        <activity android:name=".activity.FiveColorChangingTabsActivity" />
+        <activity android:name=".activity.WelcomeActivity"></activity>
     </application>
 
 </manifest>
