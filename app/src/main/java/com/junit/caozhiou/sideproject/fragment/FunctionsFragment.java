@@ -10,10 +10,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.junit.caozhiou.sideproject.R;
+import com.junit.caozhiou.sideproject.activity.OkHttpTestActivity;
 import com.junit.caozhiou.sideproject.activity.PlayVideoActivity;
 import com.junit.caozhiou.sideproject.activity.PlayVideoListActivity;
 import com.junit.caozhiou.sideproject.activity.SwipeRecyclerViewActivity;
 import com.junit.caozhiou.sideproject.activity.WelcomeActivity;
+import com.junit.caozhiou.sideproject.activity.XmlParseActivity;
 import com.junit.caozhiou.sideproject.entity.ScreenBean;
 import com.junit.caozhiou.sideproject.view.SwipeItemLayout;
 
@@ -23,6 +25,8 @@ public class FunctionsFragment extends Fragment {
     private View contentView;
     private Button btn_go_to_tv;
     private Button btn_go_video_list;
+    private Button btn_test_okhttp;
+    private Button btn_xml_parse;
     private ScreenBean screenBean;
     private SwipeItemLayout item_contact_swipe_root;
     private TextView tv_delete, tv_share;
@@ -47,6 +51,8 @@ public class FunctionsFragment extends Fragment {
 
         btn_go_to_tv = (Button) contentView.findViewById(R.id.btn_go_to_tv);
         btn_go_video_list = (Button) contentView.findViewById(R.id.btn_go_video_list);
+        btn_test_okhttp = (Button) contentView.findViewById(R.id.btn_test_okhttp);
+        btn_xml_parse = (Button) contentView.findViewById(R.id.btn_xml_parse);
         btn_go_to_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +67,20 @@ public class FunctionsFragment extends Fragment {
                 startActivity(intent_list);
             }
         });
-
+        btn_test_okhttp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), OkHttpTestActivity.class);
+                startActivity(intent);
+            }
+        });
+        btn_xml_parse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), XmlParseActivity.class);
+                startActivity(intent);
+            }
+        });
         item_contact_swipe_root = (SwipeItemLayout) contentView.findViewById(R.id.item_contact_swipe_root);
 
         item_contact_swipe_root.setSwipeAble(true);

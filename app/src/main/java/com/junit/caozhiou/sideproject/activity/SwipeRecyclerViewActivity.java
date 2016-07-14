@@ -68,4 +68,5 @@ public class SwipeRecyclerViewActivity extends Activity implements SwipeRecycler
         datas.remove(datas.get(position));
         swipeRecyclerViewAdapter.notifyDataSetChanged();
     }
+
 }

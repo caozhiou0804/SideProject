@@ -17,6 +17,18 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="多个视频等你哦" />
+    <Button
+        android:id="@+id/btn_test_okhttp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="okhttp测试" />
+    <Button
+        android:id="@+id/btn_xml_parse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="xml解析" />
 
     <com.junit.caozhiou.sideproject.view.SwipeItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
