@@ -13,4 +13,7 @@
 
     <item name="urv_main_list" type="id" />
     <item name="urv_main_progress_bar" type="id" />
+    <item type="id" name="loop_view_pager"/>
+    <item type="id" name="loop_view_dots"/>
+    <item type="id" name="loop_view_desc"/>
 </resources>

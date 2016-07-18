@@ -45,7 +45,7 @@
         <activity android:name=".activity.FiveColorChangingTabsActivity" />
         <activity android:name=".activity.WelcomeActivity" />
         <activity android:name=".activity.OkHttpTestActivity" />
-        <activity android:name=".activity.XmlParseActivity"></activity>
+        <activity android:name=".activity.XmlParseActivity" />
     </application>
 
 </manifest>

@@ -38,6 +38,9 @@ import com.junit.caozhiou.sideproject.activity.HomeActivity;
 import com.junit.caozhiou.sideproject.activity.SplashActivity;
 import com.junit.caozhiou.sideproject.entity.VideoData;
 import com.junit.caozhiou.sideproject.util.ScreenUtil;
+import com.junit.caozhiou.sideproject.view.viewpager.AdLoopView;
+import com.junit.caozhiou.sideproject.view.viewpager.internal.ItemData;
+import com.junit.caozhiou.sideproject.view.viewpager.internal.LoopData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +52,7 @@ import java.util.Set;
  * 作者：lubote on 2016/6/21 09:49
  * 邮箱：nj.caozhiou@dhjt.com
  */
-public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<SimpleRecyclerViewAdapter.ViewHolder> {
+public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private OnRecyclerItemClickListener onRecyclerItemClickListener;
 
     public void setOnRecyclerItemClickListener(OnRecyclerItemClickListener onRecyclerItemClickListener) {
@@ -63,15 +66,37 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<SimpleRecycl
 
     private VideoView mVideoView;
 
+
+    private static final int TYPE_VIEWPAGER = 0x01;
+    private static final int TYPE_GRIDVIEW = 0x02;
+    private static final int TYPE3 = 0x03;
+    private static final int TYPE4 = 0x04;
+
     public SimpleRecyclerViewAdapter(Context context, OnRecyclerItemClickListener onRecyclerItemClickListener, List<VideoData> videoDatas) {
         this.mInflater = LayoutInflater.from(context);
         this.videoDatas = videoDatas;
         this.context = context;
         this.onRecyclerItemClickListener = onRecyclerItemClickListener;
-//        Vitamio.isInitialized(context);
     }
 
-    private int time;
+    @Override
+    public int getItemCount() {
+        return videoDatas.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        int type;
+        if (position == 0) {
+            type = TYPE_VIEWPAGER;
+        } else if (position > 0 && position <= 5) {
+            type = TYPE_GRIDVIEW;
+        } else if (position > 5 && position < 10) {
+            type = TYPE3;
+        } else
+            type = TYPE4;
+        return type;
+    }
 
     /**
      * item显示类型
@@ -81,157 +106,117 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<SimpleRecycl
      * @return
      */
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View view = mInflater.inflate(R.layout.item_simple_recycler_layout, parent, false);
-        //这边可以做一些属性设置，甚至事件监听绑定
-        //view.setBackgroundColor(Color.RED);
-        time++;
-        Log.d("onCreateViewHolder", "加载" + time + "次");
-        ViewHolder viewHolder = new ViewHolder(view);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onRecyclerItemClickListener != null) {
-                    onRecyclerItemClickListener.onItemClick(view, (int) view.getTag());
-                }
-            }
-        });
-        viewHolder.videoPlayBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentIndex = (int) view.getTag();
-                playPosition = -1;
-                notifyDataSetChanged();
-            }
-        });
-        return viewHolder;
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == TYPE_VIEWPAGER) {
+            final View view = mInflater.inflate(R.layout.item_top_viewpager, parent, false);
+            ViewPagerViewHolder viewHolder = new ViewPagerViewHolder(view);
+//            view.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if (onRecyclerItemClickListener != null) {
+//                        onRecyclerItemClickListener.onItemClick(view, (int) view.getTag());
+//                    }
+//                }
+//            });
+            return viewHolder;
+        } else if (viewType == TYPE_GRIDVIEW) {
+            final View view = mInflater.inflate(R.layout.item_contact, parent, false);
+            FootViewHolder viewHolder = new FootViewHolder(view);
+            return viewHolder;
+        } else if (viewType == TYPE3) {
+            final View view = mInflater.inflate(R.layout.item_drag_recycler_view, parent, false);
+            FootViewHolder viewHolder = new FootViewHolder(view);
+            return viewHolder;
+        } else {
+            final View view = mInflater.inflate(R.layout.item_waterfall, parent, false);
+            FootViewHolder viewHolder = new FootViewHolder(view);
+            return viewHolder;
+        }
     }
 
-    private int currentIndex = -1;
-    private int playPosition = -1;
-    private boolean isPaused = false;
-    private boolean isPlaying = false;
+    private LoopData loopData;
+    private List<ItemData> itemDatas;
+
+    private void intiViewPagerData() {
+        itemDatas = new ArrayList<>();
+        loopData = new LoopData();
+
+        ItemData itemData1 = new ItemData();
+        itemData1.setImgUrl("http://img4.imgtn.bdimg.com/it/u=3087959955,1627184380&fm=21&gp=0.jpg");
+        itemData1.setLink("http://www.baidu.com");
+
+        ItemData itemData2 = new ItemData();
+        itemData2.setImgUrl("http://photo.enterdesk.com/2011-11-19/enterdesk.com-CD4E8814A52D88335DC2EAB725FBFF5D.jpg");
+        itemData2.setLink("http://www.baidu.com");
+
+        ItemData itemData3 = new ItemData();
+        itemData3.setImgUrl("http://img0.imgtn.bdimg.com/it/u=3752951180,265738684&fm=21&gp=0.jpg");
+        itemData3.setLink("http://www.baidu.com");
+
+        ItemData itemData4 = new ItemData();
+        itemData4.setImgUrl("http://img5.imgtn.bdimg.com/it/u=3310535289,2501327088&fm=21&gp=0.jpg");
+        itemData4.setLink("http://www.baidu.com");
+
+        itemDatas.add(itemData1);
+        itemDatas.add(itemData2);
+        itemDatas.add(itemData3);
+        itemDatas.add(itemData4);
+
+        loopData.setItems(itemDatas);
+
+    }
 
     /**
-     * 数据的绑定显示
+     * viewpager数据的绑定显示
      *
      * @param holder
      * @param position
      */
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        Log.d("onBindViewHolder", "加载" + time + "次");
-        if (null != videoDatas && videoDatas.size() > 0) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+//        if (null != videoDatas && videoDatas.size() > 0) {
 //            holder.tv_video_title.setText(videoDatas.get(position).getVideoTitle());
 //            holder.tv_video_time.setText(videoDatas.get(position).getVideoTime());
-            playVideo(position, holder);
+//        }
+//        holder.itemView.setTag(position);
+        if (holder instanceof ViewPagerViewHolder) {
+            ViewPagerViewHolder viewPagerViewHolder = (ViewPagerViewHolder) holder;
+            intiViewPagerData();
+            viewPagerViewHolder.adloop_act_adloopview.refreshData(loopData);
+            viewPagerViewHolder.adloop_act_adloopview.startAutoLoop();
         }
-        holder.itemView.setTag(position);
-//        startTranslateFromBottom(holder.v);
+        startScaleAndTranslate(holder.itemView);
     }
 
-    /**
-     * 播放视频
-     *
-     * @param position
-     * @param holder
-     */
-    private void playVideo(int position, final ViewHolder holder) {
-        if (currentIndex == position) {
-            Log.d("currentIndex", currentIndex + "currentIndex == position");
-            holder.videoPlayBtn.setVisibility(View.INVISIBLE);
-            holder.videoImage.setVisibility(View.INVISIBLE);
-            holder.videoNameText.setVisibility(View.INVISIBLE);
 
-            if (isPlaying || playPosition == -1) {
-                if (mVideoView != null) {
-                    Log.d("4", mVideoView + "mVideoView!=null");
-
-                    mVideoView.setVisibility(View.GONE);
-                    mVideoView.stopPlayback();
-                    holder.mProgressBar.setVisibility(View.GONE);
-                }
-            }
-//            mVideoView = (VideoView) convertView
-//                    .findViewById(R.id.videoview);
-            mVideoView.setVisibility(View.VISIBLE);
-//            mMediaCtrl.setAnchorView(mVideoView);
-//            mMediaCtrl.setMediaPlayer(mVideoView);
-//            mVideoView.setMediaController(mMediaCtrl);
-            mVideoView.requestFocus();
-            holder.mProgressBar.setVisibility(View.VISIBLE);
-            if (playPosition > 0 && isPaused) {
-                mVideoView.start();
-                isPaused = false;
-                isPlaying = true;
-                holder.mProgressBar.setVisibility(View.GONE);
-            } else {
-                mVideoView.setVideoPath(videoDatas.get(position).getVideoPath());
-                isPaused = false;
-                isPlaying = true;
-                System.out.println("播放新的视频");
-            }
-            mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    if (mVideoView != null) {
-                        mVideoView.seekTo(0);
-                        mVideoView.stopPlayback();
-                        currentIndex = -1;
-                        isPaused = false;
-                        isPlaying = false;
-                        holder.mProgressBar.setVisibility(View.GONE);
-                        notifyDataSetChanged();
-                    }
-                }
-            });
-            mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    holder.mProgressBar.setVisibility(View.GONE);
-                    mVideoView.start();
-                }
-            });
-
-        } else {
-            holder.videoPlayBtn.setVisibility(View.VISIBLE);
-            holder.videoImage.setVisibility(View.VISIBLE);
-            holder.videoNameText.setVisibility(View.VISIBLE);
-            holder.mProgressBar.setVisibility(View.GONE);
-        }
+    private void startScaleAndTranslate(View view) {
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.5f, 1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0.5f, 1f);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationY", 200, 0);
+        AnimatorSet set = new AnimatorSet();
+        set.play(scaleX).with(scaleY).with(animator);
+        set.setDuration(400);
+        set.start();
     }
 
-//    private void startScale(View view) {
-//        ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.5f, 1f);
-//        ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY", 0.5f, 1f);
-//        AnimatorSet set = new AnimatorSet();
-//        set.play(scaleX).with(scaleY);
-//        set.setDuration(400);
-//        set.start();
-//    }
-//
-//    private void startTranslateFromLeft(View view) {
-//        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationX", -ScreenUtil.getScreenWidth(context), 0);
-//        animator.setDuration(400);
-//        animator.start();
-//    }
-//
+    //
+    private void startTranslateFromLeft(View view) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationX", -ScreenUtil.getScreenWidth(context), 0);
+        animator.setDuration(400);
+        animator.start();
+    }
+
+    //
 //    private void startTranslateFromRight(View view) {
 //        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationX", ScreenUtil.getScreenWidth(context), 0);
 //        animator.setDuration(400);
 //        animator.start();
 //    }
 //
-//    private void startTranslateFromBottom(View view) {
-//        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationY", 200, 0);
-//        animator.setDuration(400);
-//        animator.start();
-//    }
-
-    @Override
-    public int getItemCount() {
-        return videoDatas.size();
+    private void startTranslateFromBottom(View view) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationY", 200, 0);
+        animator.setDuration(400);
+        animator.start();
     }
 
 
@@ -242,16 +227,38 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<SimpleRecycl
         TextView videoNameText;
         ImageButton videoPlayBtn;
         ProgressBar mProgressBar;
-        public View v;
 
         public ViewHolder(View view) {
             super(view);
-            v = view;
             videoImage = (ImageView) view.findViewById(R.id.video_image);
             videoNameText = (TextView) view.findViewById(R.id.tv_video_title);
             videoPlayBtn = (ImageButton) view.findViewById(R.id.btn_play_video);
             mProgressBar = (ProgressBar) view.findViewById(R.id.progressbar);
             mVideoView = (VideoView) view.findViewById(R.id.videoview);
+        }
+    }
+
+    /**
+     * 底部FootView布局
+     */
+    public static class ViewPagerViewHolder extends RecyclerView.ViewHolder {
+        private AdLoopView adloop_act_adloopview;
+
+        public ViewPagerViewHolder(View view) {
+            super(view);
+            adloop_act_adloopview = (AdLoopView) view.findViewById(R.id.adloop_act_adloopview);
+        }
+    }
+
+    /**
+     * 底部FootView布局
+     */
+    public static class FootViewHolder extends RecyclerView.ViewHolder {
+        //        private TextView foot_view_item_tv;
+
+        public FootViewHolder(View view) {
+            super(view);
+//            foot_view_item_tv = (TextView) view.findViewById(R.id.foot_view_item_tv);
         }
     }
 
