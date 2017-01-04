@@ -5,15 +5,13 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 import com.junit.caozhiou.sideproject.R;
-import com.junit.caozhiou.sideproject.base.BaseFragmentActivity;
-import com.junit.caozhiou.sideproject.util.ScreenUtil;
 
-public class SplashActivity extends BaseFragmentActivity {
+public class SplashActivity extends FragmentActivity {
 
     private ImageView iv_splash01;
     private ImageView iv_splash02;
@@ -34,7 +32,7 @@ public class SplashActivity extends BaseFragmentActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 3500);
+        }, 1500);
     }
 
     private Handler intentHandler = new Handler();
@@ -44,7 +42,7 @@ public class SplashActivity extends BaseFragmentActivity {
         iv_splash02 = (ImageView) findViewById(R.id.iv_splash02);
         iv_splash03 = (ImageView) findViewById(R.id.iv_splash03);
         iv_splash04 = (ImageView) findViewById(R.id.iv_splash04);
-        initAnim();
+       // initAnim();
     }
 
     private void initAnim() {

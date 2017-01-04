@@ -97,8 +97,8 @@ public class TabInfoFragment extends Fragment {
         mPagerAdater.setFragments(fragments);
 
         info_viewpager.setAdapter(mPagerAdater);
-        tab_layout.setupWithViewPager(info_viewpager);
 
+        tab_layout.setupWithViewPager(info_viewpager);
 
         //设置Tablayout
         //设置TabLayout模式 -该使用Tab数量比较多的情况

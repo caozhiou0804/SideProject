@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -20,11 +21,10 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.junit.caozhiou.sideproject.R;
-import com.junit.caozhiou.sideproject.base.BaseFragmentActivity;
 import com.junit.caozhiou.sideproject.entity.ScreenBean;
 import com.junit.caozhiou.sideproject.util.LocUtil;
 
-public class PlayVideoActivity extends BaseFragmentActivity {
+public class PlayVideoActivity extends FragmentActivity {
     /** 当前视频路径 */
 //    private String path = Environment.getExternalStorageDirectory() + "/DCIM/Camera/test1.MOV";
     private String path = "http://www.yicai.com/video/";

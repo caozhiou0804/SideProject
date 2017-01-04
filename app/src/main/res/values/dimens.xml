@@ -32,4 +32,11 @@
     <!--dialog -->
     <dimen name="dialog_padding">16dp</dimen>
 
+    <!-- my photo -->
+    <dimen name="folder_cover_size">72dp</dimen>
+    <dimen name="space_size">2dp</dimen>
+    <dimen name="image_size">120dp</dimen>
+    <dimen name="evaluation">10dp</dimen>
+    <dimen name="order_size">12sp</dimen>
+
 </resources>
