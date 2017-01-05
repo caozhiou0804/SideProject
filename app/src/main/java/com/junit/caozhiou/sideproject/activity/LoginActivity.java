@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -11,9 +12,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.junit.caozhiou.sideproject.R;
+import com.junit.caozhiou.sideproject.entity.CityBean;
 import com.junit.caozhiou.sideproject.entity.UserBean;
 import com.junit.caozhiou.sideproject.net.OkHttpUtil;
 import com.junit.caozhiou.sideproject.net.RequestManager;
+import com.junit.caozhiou.sideproject.net.callback.ResponseCallBack;
 import com.junit.caozhiou.sideproject.presenter.LoginPresenter;
 import com.junit.caozhiou.sideproject.presenter.LoginView;
 import com.junit.caozhiou.sideproject.presenter.back.LoginCallBack;
@@ -25,6 +28,9 @@ import com.junit.caozhiou.sideproject.view.multi_image_selector.MultiImageSelect
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * A login screen that offers login via email/password.
@@ -165,15 +171,14 @@ public class LoginActivity extends AppCompatActivity implements LoginView, Login
     }
 
     private void doPostAsync(UserBean u) {
-
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("username", u.getUsername());
         params.put("password", u.getPassword());
-        String url = "http://192.168.111.2:8080/WebApp/Userfeature/userLogin";
-        OkHttpUtil.request1(url, RequestManager.MEDIA_TYPE_MARKDOWN, params, new OkHttpUtil.ResponseCallBack<UserBean>() {
+        String url = "http://192.168.111.2:8080/WebApp/Userfeature/getCityList?row=10&page=1";
+        OkHttpUtil.request1(url, RequestManager.MEDIA_TYPE_MARKDOWN, params, new ResponseCallBack<CityBean>() {
             @Override
-            public UserBean parseObj() {
-                return null;
+            public void onSuccess(CityBean cityBean, Call call, Response response) {
+                Log.d("qqqqqqqqqqqqqqqqqqq",cityBean.getMessage());
             }
         });
     }

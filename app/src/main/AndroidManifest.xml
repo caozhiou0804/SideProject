@@ -27,7 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".okhttputiltest.OkHttpTestActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>

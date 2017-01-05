@@ -12,17 +12,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import com.junit.caozhiou.sideproject.R;
 import com.junit.caozhiou.sideproject.adapter.PersonalSettingAdapter;
 import com.junit.caozhiou.sideproject.base.BaseFragment;
-import com.junit.caozhiou.sideproject.entity.BaseEntity;
+import com.junit.caozhiou.sideproject.entity.CityBean;
 import com.junit.caozhiou.sideproject.entity.PersonalSettingData;
-import com.junit.caozhiou.sideproject.http.OkGo;
-import com.junit.caozhiou.sideproject.http.callback.AbsCallback;
+import com.junit.caozhiou.sideproject.net.OkHttpUtil;
+import com.junit.caozhiou.sideproject.net.RequestManager;
+import com.junit.caozhiou.sideproject.net.callback.ResponseCallBack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -70,19 +70,30 @@ public class PersonLeftFragment extends BaseFragment {
     @OnClick(R.id.sdv_person_icon)
     public void person_icon(View view) {
         Toast.makeText(getActivity(), "sdv_person_icon", Toast.LENGTH_LONG).show();
-        OkGo.get("http://192.168.111.2:8080/WebApp/Userfeature/userLogin?username=111&password=21323")//
-                .execute(new AbsCallback<BaseEntity>() {
-                    @Override
-                    public void onSuccess(BaseEntity o, Call call, Response response) {
-                        Log.d("",o.getMessage());
-                    }
+//        OkGo.get("http://192.168.111.2:8080/WebApp/Userfeature/userLogin?username=111&password=21323")//
+//                .execute(new AbsCallback<BaseEntity>() {
+//                    @Override
+//                    public void onSuccess(BaseEntity o, Call call, Response response) {
+//                        Log.d("",o.getMessage());
+//                    }
+//
+//                    @Override
+//                    public BaseEntity convertSuccess(Response response) throws Exception {
+//                        JsonReader jsonReader = new JsonReader(response.body().charStream());
+//                        return new Gson().fromJson(jsonReader,BaseEntity.class);
+//                    }
+//                });
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("page", "1");
+        params.put("row", "10");
+        String url = "http://192.168.111.2:8080/WebApp/Userfeature/getCityList";
+        OkHttpUtil.request1(url, RequestManager.MEDIA_TYPE_MARKDOWN, params, new ResponseCallBack<CityBean>() {
+            @Override
+            public void onSuccess(CityBean cityBean, Call call, Response response) {
+                Log.d("qqqqqqqqqqqqqqqqqqq",cityBean.getMessage());
+            }
+        });
 
-                    @Override
-                    public BaseEntity convertSuccess(Response response) throws Exception {
-                        JsonReader jsonReader = new JsonReader(response.body().charStream());
-                        return new Gson().fromJson(jsonReader,BaseEntity.class);
-                    }
-                });
 
     }
     /**

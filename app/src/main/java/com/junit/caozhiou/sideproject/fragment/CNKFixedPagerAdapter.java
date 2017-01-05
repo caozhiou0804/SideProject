@@ -4,20 +4,15 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.junit.caozhiou.sideproject.R;
-import com.junit.caozhiou.sideproject.application.FDApplication;
 import com.junit.caozhiou.sideproject.util.ScreenUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

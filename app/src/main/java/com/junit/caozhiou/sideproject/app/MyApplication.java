@@ -10,9 +10,19 @@ import com.facebook.common.util.ByteConstants;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.cache.MemoryCacheParams;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.junit.caozhiou.sideproject.crash.CrashHandler;
+import com.junit.caozhiou.sideproject.okhttputil.OkHttpUtils;
+import com.junit.caozhiou.sideproject.okhttputil.https.HttpsUtils;
+import com.junit.caozhiou.sideproject.okhttputil.log.LoggerInterceptor;
 import com.junit.caozhiou.sideproject.util.FileUtil;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
+
+import okhttp3.OkHttpClient;
 
 /**
  * User: caozhiou(1195002650@qq.com)
@@ -39,6 +49,27 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         ctx =this;
+        //初始化崩溃日志收集器
+        CrashHandler crashHandler = CrashHandler.getInstance();
+        crashHandler.init(getApplicationContext());
+        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
+
+//        CookieJarImpl cookieJar1 = new CookieJarImpl(new MemoryCookieStore());
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(10000L, TimeUnit.MILLISECONDS)
+                .readTimeout(10000L, TimeUnit.MILLISECONDS)
+                .addInterceptor(new LoggerInterceptor("TAG"))
+//                .cookieJar(cookieJar1)
+                .hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                })
+                .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
+                .build();
+        OkHttpUtils.initClient(okHttpClient);
+
         initImage_facebook();
 
     }
