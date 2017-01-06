@@ -32,7 +32,7 @@ import okhttp3.Request;
 
 public class OkHttpTestActivity extends AppCompatActivity {
 
-    private String mBaseUrl = "http://192.168.31.242:8888/okHttpServer/";
+    private String mBaseUrl = "http://192.168.111.2:8080/WebApp/";
 
     private static final String TAG = "OkHttpTestActivity";
 
@@ -97,7 +97,8 @@ public class OkHttpTestActivity extends AppCompatActivity {
 
     public void getHtml(View view) {
         String url = "http://www.zhiyun-tech.com/App/Rider-M/changelog-zh.txt";
-        url = "http://www.391k.com/api/xapi.ashx/info.json?key=bd_hyrzjjfb4modhj&size=10&page=1";
+//        url = "http://www.391k.com/api/xapi.ashx/info.json?key=bd_hyrzjjfb4modhj&size=10&page=1";
+        url = mBaseUrl+"Userfeature/getCityList";
         OkHttpUtils
                 .get()
                 .url(url)

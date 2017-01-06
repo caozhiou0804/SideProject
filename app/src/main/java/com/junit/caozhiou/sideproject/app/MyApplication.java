@@ -45,19 +45,23 @@ public class MyApplication extends Application {
             Integer.MAX_VALUE); // 内存缓存中单个图片的最大大小。
 
     private Context ctx;
+    private boolean isDebug= true;
     @Override
     public void onCreate() {
         super.onCreate();
         ctx =this;
         //初始化崩溃日志收集器
-        CrashHandler crashHandler = CrashHandler.getInstance();
-        crashHandler.init(getApplicationContext());
+        if(!isDebug){
+            CrashHandler crashHandler = CrashHandler.getInstance();
+            crashHandler.init(getApplicationContext());
+        }
+
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
 
 //        CookieJarImpl cookieJar1 = new CookieJarImpl(new MemoryCookieStore());
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(10000L, TimeUnit.MILLISECONDS)
-                .readTimeout(10000L, TimeUnit.MILLISECONDS)
+                .connectTimeout(60000L, TimeUnit.MILLISECONDS)
+                .readTimeout(60000L, TimeUnit.MILLISECONDS)
                 .addInterceptor(new LoggerInterceptor("TAG"))
 //                .cookieJar(cookieJar1)
                 .hostnameVerifier(new HostnameVerifier() {
