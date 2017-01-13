@@ -10,6 +10,13 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        manifestPlaceholders = [
+                GETUI_APP_ID : "HE5gSdcXjw5VBzoIdIfa32",
+                GETUI_APP_KEY : "fLOalCaRpN9NVO2G4aLVP9",
+                GETUI_APP_SECRET : "sspLr8JBsJ8gucd8HCszu",
+                PACKAGE_NAME : "com.junit.caozhiou.sideproject"
+        ]
+        ndk {      abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "mips", "mips64","x86", "x86_64"    }
     }
     buildTypes {
         release {
@@ -34,4 +41,6 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     testCompile 'junit:junit:4.12'
     compile 'com.umeng.analytics:analytics:6.0.6'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.getui:sdk:+'
 }

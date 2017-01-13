@@ -4,48 +4,25 @@ package com.junit.caozhiou.sideproject.adapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.Intent;
-import android.media.MediaPlayer;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationSet;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-
-import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.VideoView;
-
 import com.junit.caozhiou.sideproject.R;
-import com.junit.caozhiou.sideproject.activity.HomeActivity;
-import com.junit.caozhiou.sideproject.activity.SplashActivity;
-import com.junit.caozhiou.sideproject.entity.VideoData;
+import com.junit.caozhiou.sideproject.entity.UserDataBean;
 import com.junit.caozhiou.sideproject.util.ScreenUtil;
+import com.junit.caozhiou.sideproject.view.SwipeItemLayout;
 import com.junit.caozhiou.sideproject.view.viewpager.AdLoopView;
 import com.junit.caozhiou.sideproject.view.viewpager.internal.ItemData;
 import com.junit.caozhiou.sideproject.view.viewpager.internal.LoopData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * 当前类注释:RecyclerView 数据自定义Adapter
@@ -60,28 +37,29 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     private LayoutInflater mInflater;
-    private List<VideoData> videoDatas = null;
+    private List<UserDataBean> userBeanList = null;
 
     private Context context;
-
-    private VideoView mVideoView;
 
 
     private static final int TYPE_VIEWPAGER = 0x01;
     private static final int TYPE_GRIDVIEW = 0x02;
     private static final int TYPE3 = 0x03;
     private static final int TYPE4 = 0x04;
-
-    public SimpleRecyclerViewAdapter(Context context, OnRecyclerItemClickListener onRecyclerItemClickListener, List<VideoData> videoDatas) {
+    /**
+     * 当前处于打开状态的item
+     */
+    private List<SwipeItemLayout> mOpenedSil = new ArrayList<>();
+    public SimpleRecyclerViewAdapter(Context context, OnRecyclerItemClickListener onRecyclerItemClickListener, List<UserDataBean> userBeanList) {
         this.mInflater = LayoutInflater.from(context);
-        this.videoDatas = videoDatas;
+        this.userBeanList = userBeanList;
         this.context = context;
         this.onRecyclerItemClickListener = onRecyclerItemClickListener;
     }
 
     @Override
     public int getItemCount() {
-        return videoDatas.size();
+        return userBeanList.size() + 1;
     }
 
     @Override
@@ -89,12 +67,14 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         int type;
         if (position == 0) {
             type = TYPE_VIEWPAGER;
-        } else if (position > 0 && position <= 5) {
+        }
+//        else if (position > 0 && position <= 5) {
+//            type = TYPE_GRIDVIEW;
+//        } else if (position > 5 && position < 10) {
+//            type = TYPE3;
+//        }
+        else
             type = TYPE_GRIDVIEW;
-        } else if (position > 5 && position < 10) {
-            type = TYPE3;
-        } else
-            type = TYPE4;
         return type;
     }
 
@@ -184,10 +164,47 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             intiViewPagerData();
             viewPagerViewHolder.adloop_act_adloopview.refreshData(loopData);
             viewPagerViewHolder.adloop_act_adloopview.startAutoLoop();
+        } else if (holder instanceof FootViewHolder) {//
+             FootViewHolder footViewHolder = (FootViewHolder) holder;
+            final SwipeItemLayout swipeRoot = footViewHolder.swipeItemLayout;
+            footViewHolder.item_contact_title.setText(userBeanList.get(position - 1).getUsername());
+            footViewHolder.item_contact_delete.setText("关注");
+
+            footViewHolder.item_contact_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onRecyclerItemClickListener.onFollowClick(userBeanList.get(position - 1), position - 1);
+                    closeOpenedSwipeItemLayoutWithAnim();
+                }
+            });
+
+            swipeRoot.setDelegate(new SwipeItemLayout.SwipeItemLayoutDelegate() {
+                @Override
+                public void onSwipeItemLayoutOpened(SwipeItemLayout swipeItemLayout) {
+                    closeOpenedSwipeItemLayoutWithAnim();
+                    mOpenedSil.add(swipeItemLayout);
+                }
+
+                @Override
+                public void onSwipeItemLayoutClosed(SwipeItemLayout swipeItemLayout) {
+                    mOpenedSil.remove(swipeItemLayout);
+                }
+
+                @Override
+                public void onSwipeItemLayoutStartOpen(SwipeItemLayout swipeItemLayout) {
+                    closeOpenedSwipeItemLayoutWithAnim();
+                }
+            });
         }
         startScaleAndTranslate(holder.itemView);
     }
 
+    public void closeOpenedSwipeItemLayoutWithAnim() {
+        for (SwipeItemLayout sil : mOpenedSil) {
+            sil.closeWithAnim();
+        }
+        mOpenedSil.clear();
+    }
 
     private void startScaleAndTranslate(View view) {
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.5f, 1f);
@@ -234,7 +251,6 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             videoNameText = (TextView) view.findViewById(R.id.tv_video_title);
             videoPlayBtn = (ImageButton) view.findViewById(R.id.btn_play_video);
             mProgressBar = (ProgressBar) view.findViewById(R.id.progressbar);
-            mVideoView = (VideoView) view.findViewById(R.id.videoview);
         }
     }
 
@@ -254,11 +270,15 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
      * 底部FootView布局
      */
     public static class FootViewHolder extends RecyclerView.ViewHolder {
-        //        private TextView foot_view_item_tv;
+        private TextView item_contact_title;
+        private TextView item_contact_delete;
+        private SwipeItemLayout swipeItemLayout;
 
         public FootViewHolder(View view) {
             super(view);
-//            foot_view_item_tv = (TextView) view.findViewById(R.id.foot_view_item_tv);
+            item_contact_title = (TextView) view.findViewById(R.id.item_contact_title);
+            item_contact_delete = (TextView) view.findViewById(R.id.item_contact_delete);
+            swipeItemLayout = (SwipeItemLayout) view.findViewById(R.id.item_contact_swipe_root);
         }
     }
 
@@ -270,6 +290,8 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
          * @param position 点击索引
          */
         void onItemClick(View view, int position);
+
+        void onFollowClick(UserDataBean userDataBean, int position);
     }
 
 //    //添加数据
@@ -284,4 +306,5 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 //        mTitles.remove(position);
 //        notifyItemRemoved(position);
 //    }
+
 }

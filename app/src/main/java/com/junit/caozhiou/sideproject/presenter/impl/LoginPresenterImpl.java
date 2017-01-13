@@ -3,7 +3,7 @@ package com.junit.caozhiou.sideproject.presenter.impl;
 import android.os.Handler;
 import android.os.Message;
 
-import com.junit.caozhiou.sideproject.entity.UserBean;
+import com.junit.caozhiou.sideproject.entity.UserDataBean;
 import com.junit.caozhiou.sideproject.net.OkHttpUtil;
 import com.junit.caozhiou.sideproject.net.RequestManager;
 import com.junit.caozhiou.sideproject.presenter.LoginPresenter;
@@ -25,7 +25,7 @@ public class LoginPresenterImpl implements LoginPresenter {
     private LoginView loginView;
     private LoginCallBack loginCallBack;
 
-    public LoginPresenterImpl(LoginView loginView, LoginCallBack<UserBean> loginCallBack) {
+    public LoginPresenterImpl(LoginView loginView, LoginCallBack loginCallBack) {
         this.loginView = loginView;
         this.loginCallBack = loginCallBack;
     }
@@ -36,7 +36,7 @@ public class LoginPresenterImpl implements LoginPresenter {
         String username = loginView.getUsername();
         String pass = loginView.getPassword();
 
-        UserBean u = new UserBean();
+        UserDataBean u = new UserDataBean();
         u.setUsername(username);
         u.setPassword(pass);
 
@@ -52,7 +52,7 @@ public class LoginPresenterImpl implements LoginPresenter {
 
     }
 
-    private void doPostAsync(UserBean u) {
+    private void doPostAsync(UserDataBean u) {
 
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("username",u.getUsername());
@@ -87,9 +87,7 @@ public class LoginPresenterImpl implements LoginPresenter {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            UserBean userBean = new UserBean();
-            userBean.setPassword(msg.obj.toString());
-            loginCallBack.loginBack(userBean);
+            loginCallBack.loginBack(msg.obj);
         }
     };
 }

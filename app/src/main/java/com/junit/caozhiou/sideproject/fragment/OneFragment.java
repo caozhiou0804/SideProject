@@ -23,7 +23,6 @@ public class OneFragment  extends Fragment{
             if(bundle!=null){
                 tv_content.setText(bundle.getString("extra"));
             }
-
         }
         return mView;
     }

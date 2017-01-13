@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/androidColorD"
+        android:background="@color/tv_color"
         android:gravity="center_vertical"
         android:paddingBottom="35dp"
         android:paddingLeft="20dp"
@@ -18,29 +18,30 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/sdv_person_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            fresco:placeholderImage="@drawable/jr4"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            fresco:placeholderImage="@drawable/userphoto_default"
             fresco:roundedCornerRadius="40dp"
             fresco:roundingBorderColor="@color/androidColorB" />
+      <!--  <ImageView
+            android:id="@+id/sdv_person_icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/userphoto_default" />-->
 
-        <LinearLayout
-            android:id="@+id/ll_information"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/sdv_person_icon"
-            android:orientation="vertical">
+
 
             <TextView
                 android:id="@+id/tv_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="大帅哥"
-                android:textColor="@color/black"
+                android:text=""
+                android:textColor="@color/white"
+                android:layout_below="@id/sdv_person_icon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -49,21 +50,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:layout_below="@id/tv_user_name"
                 android:layout_marginTop="5dp"
-                android:text="普通会员"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-        </LinearLayout>
+                android:text="点击查看/编辑"
+                android:textColor="@color/gray_bg"
+                android:textSize="13sp" />
 
-        <TextView
-            android:id="@+id/tv_person_sign"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/sdv_person_icon"
-            android:layout_marginTop="20dp"
-            android:text="“个性签名”"
-            android:textColor="@color/gray"
-            android:textSize="14sp" />
+
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView

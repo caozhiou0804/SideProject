@@ -6,94 +6,110 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
-import android.view.View;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
+import com.google.gson.Gson;
+import com.igexin.sdk.PushManager;
 import com.junit.caozhiou.sideproject.R;
+import com.junit.caozhiou.sideproject.app.MyApplication;
+import com.junit.caozhiou.sideproject.constant.Constant;
+import com.junit.caozhiou.sideproject.entity.UserBean;
+import com.junit.caozhiou.sideproject.log.L;
+import com.junit.caozhiou.sideproject.okhttputil.OkHttpUtils;
+import com.junit.caozhiou.sideproject.okhttputil.callback.StringCallback;
+import com.junit.caozhiou.sideproject.service.DemoIntentService;
+import com.junit.caozhiou.sideproject.service.DemoPushService;
+import com.junit.caozhiou.sideproject.util.PreferenceUtil;
+
+import okhttp3.Call;
 
 public class SplashActivity extends FragmentActivity {
 
-    private ImageView iv_splash01;
-    private ImageView iv_splash02;
-    private ImageView iv_splash03;
-    private ImageView iv_splash04;
-    private static final int ANIM_LAST_TIME = 500;
+    private static final int ANIM_LAST_TIME = 3000;
+    private ImageView imageView_splash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        imageView_splash = (ImageView) findViewById(R.id.imageView_splash);
+        login();
+        startTranslationAnim(imageView_splash);
+        PushManager.getInstance().initialize(this.getApplicationContext(), DemoPushService.class);
+        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), DemoIntentService.class);
+    }
 
-        initView();
+    /**
+     * 页面跳转
+     *
+     * @param isLogin 是否登录
+     */
+    private void jumpPage(final boolean isLogin) {
         intentHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
+                if (isLogin) {
+                    Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(SplashActivity.this, LoginEnterenceActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
-        }, 1500);
+        }, ANIM_LAST_TIME);
     }
 
     private Handler intentHandler = new Handler();
 
     private void initView() {
-        iv_splash01 = (ImageView) findViewById(R.id.iv_splash01);
-        iv_splash02 = (ImageView) findViewById(R.id.iv_splash02);
-        iv_splash03 = (ImageView) findViewById(R.id.iv_splash03);
-        iv_splash04 = (ImageView) findViewById(R.id.iv_splash04);
-       // initAnim();
-    }
-
-    private void initAnim() {
-        iv_splash01.setVisibility(View.INVISIBLE);
-        iv_splash02.setVisibility(View.INVISIBLE);
-        iv_splash03.setVisibility(View.INVISIBLE);
-        iv_splash04.setVisibility(View.INVISIBLE);
-        intentHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                iv_splash01.setVisibility(View.VISIBLE);
-                startTranslationAnim(iv_splash01);
-            }
-        }, 0);
-        intentHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                iv_splash02.setVisibility(View.VISIBLE);
-                startTranslationAnim(iv_splash02);
-            }
-        }, ANIM_LAST_TIME);
-        intentHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                iv_splash03.setVisibility(View.VISIBLE);
-                startTranslationAnim(iv_splash03);
-            }
-        }, ANIM_LAST_TIME * 2);
-        intentHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                iv_splash04.setVisibility(View.VISIBLE);
-                startTranslationAnim(iv_splash04);
-            }
-        }, ANIM_LAST_TIME * 3);
-        intentHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                initAnim();
-            }
-        }, ANIM_LAST_TIME * 4);
+        // initAnim();
     }
 
     private void startTranslationAnim(ImageView imageView) {
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(imageView, "scaleX", 0.3f, 1f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(imageView, "scaleY", 0.3f, 1f);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(imageView, "scaleX", 1f, 2f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(imageView, "scaleY", 1f, 1.5f);
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(imageView, "alpha", 1f, 0.3f);
         AnimatorSet set = new AnimatorSet();
-        set.play(scaleX).with(scaleY);
-        set.setDuration(ANIM_LAST_TIME);
+        set.play(scaleX).with(alpha).with(scaleY);
+        set.setDuration(ANIM_LAST_TIME + 2000);
         set.start();
-
-
     }
+
+    /**
+     * 静默登录
+     */
+    private void login() {
+
+        if (TextUtils.isEmpty(PreferenceUtil.getString(Constant.USERNAME))
+                || TextUtils.isEmpty(PreferenceUtil.getString(Constant.PASSWORD))) {
+            jumpPage(false);
+        } else {
+            String url = Constant.SERVER_IP + "Userfeature/userLogin";
+            OkHttpUtils
+                    .post()
+                    .url(url)
+                    .addParams("phone", PreferenceUtil.getString(Constant.USERNAME))//
+                    .addParams("password", PreferenceUtil.getString(Constant.PASSWORD))//
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+                            L.d("Splash", e.toString());
+                        }
+
+                        @Override
+                        public void onResponse(String response, int id) {
+                            Gson gson = new Gson();
+                            UserBean userBean = gson.fromJson(response, UserBean.class);
+                            MyApplication.getInstance().setUserDataBean(userBean.getData());
+                            jumpPage(true);
+                        }
+                    });
+        }
+    }
+
+    //个推
 }

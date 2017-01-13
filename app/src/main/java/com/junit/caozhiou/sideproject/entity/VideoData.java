@@ -5,7 +5,7 @@ package com.junit.caozhiou.sideproject.entity;
  * 邮箱：nj.caozhiou@dhjt.com
  */
 
-public class VideoData extends BaseEntity {
+public class VideoData extends BaseBean {
 
     private String videoTitle;//视频标题
     private String videoTime;//视频时长

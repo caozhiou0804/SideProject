@@ -4,7 +4,7 @@ package com.junit.caozhiou.sideproject.entity;
  * Created by Administrator on 2017/1/5.
  */
 
-public class CityBean extends BaseEntity {
+public class CityBean extends BaseBean {
     private Object data;
     private int totalPage;
 

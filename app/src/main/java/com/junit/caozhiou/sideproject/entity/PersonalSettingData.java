@@ -6,7 +6,7 @@ package com.junit.caozhiou.sideproject.entity;
  * Time: 14:23
  * Description:个人中心设置选项实体
  */
-public class PersonalSettingData extends BaseEntity{
+public class PersonalSettingData extends BaseBean {
 
     private int icon_res;
     private String settingTitle;

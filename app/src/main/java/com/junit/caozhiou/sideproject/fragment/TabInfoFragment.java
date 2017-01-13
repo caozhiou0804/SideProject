@@ -17,7 +17,8 @@ import java.util.List;
  * :使用google支持库实现Tab标签
  */
 public class TabInfoFragment extends Fragment {
-    private String[] titles = new String[]{"普通recyclerView", "下拉刷新", "瀑布流", "grid拖拽", "list拖拽", "PinnedHeader", "展开功能", "在线教育", "互联网金融", "大公司", "专栏", "新产品"};
+    private String[] titles = new String[]{"附近的人"};
+//            , "下拉刷新", "瀑布流", "grid拖拽", "list拖拽", "PinnedHeader", "展开功能", "在线教育", "互联网金融", "大公司", "专栏", "新产品"};
     private View mView;
     private TabLayout tab_layout;
     private ViewPager info_viewpager;
@@ -49,7 +50,7 @@ public class TabInfoFragment extends Fragment {
 //            oneFragment.setArguments(bundle);
 //            fragments.add(oneFragment);
 //        }
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < titles.length; i++) {
             switch (i) {
 
                 case 0:
@@ -104,7 +105,7 @@ public class TabInfoFragment extends Fragment {
         //设置TabLayout模式 -该使用Tab数量比较多的情况
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
         //设置自定义Tab--加入图标的demo
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < titles.length; i++) {
             TabLayout.Tab tab = tab_layout.getTabAt(i);
             tab.setCustomView(mPagerAdater.getTabView(i));
         }

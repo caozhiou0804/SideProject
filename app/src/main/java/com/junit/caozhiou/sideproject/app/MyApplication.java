@@ -11,6 +11,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.cache.MemoryCacheParams;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.junit.caozhiou.sideproject.crash.CrashHandler;
+import com.junit.caozhiou.sideproject.entity.UserDataBean;
 import com.junit.caozhiou.sideproject.okhttputil.OkHttpUtils;
 import com.junit.caozhiou.sideproject.okhttputil.https.HttpsUtils;
 import com.junit.caozhiou.sideproject.okhttputil.log.LoggerInterceptor;
@@ -45,13 +46,30 @@ public class MyApplication extends Application {
             Integer.MAX_VALUE); // 内存缓存中单个图片的最大大小。
 
     private Context ctx;
-    private boolean isDebug= true;
+    private static MyApplication instance;
+    private boolean isDebug = true;//是否是debug模式
+
+    public static MyApplication getInstance() {
+        return instance;
+    }
+
+    private UserDataBean userDataBean;
+
+    public UserDataBean getUserDataBean() {
+        return userDataBean;
+    }
+
+    public void setUserDataBean(UserDataBean userDataBean) {
+        this.userDataBean = userDataBean;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-        ctx =this;
+        ctx = this;
+        instance = this;
         //初始化崩溃日志收集器
-        if(!isDebug){
+        if (!isDebug) {
             CrashHandler crashHandler = CrashHandler.getInstance();
             crashHandler.init(getApplicationContext());
         }
@@ -78,6 +96,9 @@ public class MyApplication extends Application {
 
     }
 
+    /**
+     * 初始化facebook配置
+     */
     public void initImage_facebook() {
         Supplier<MemoryCacheParams> mSupplierMemoryCacheParams = new Supplier<MemoryCacheParams>() {
             @Override
@@ -99,7 +120,7 @@ public class MyApplication extends Application {
                     .build();
             DiskCacheConfig diskSmallCacheConfig = DiskCacheConfig.newBuilder(ctx)
                     .setBaseDirectoryPath(new File(FileUtil.getExternCachePath()))// 缓存图片基路径
-            .setBaseDirectoryName("image_samll")// 文件夹名
+                    .setBaseDirectoryName("image_samll")// 文件夹名
                     // .setCacheErrorLogger(cacheErrorLogger)//日志记录器用于日志错误的缓存。
                     // .setCacheEventListener(cacheEventListener)//缓存事件侦听器。
                     // .setDiskTrimmableRegistry(diskTrimmableRegistry)//类将包含一个注册表的缓存减少磁盘空间的环境。
@@ -136,5 +157,6 @@ public class MyApplication extends Application {
         } else
             Fresco.initialize(this);
     }
+
 
 }

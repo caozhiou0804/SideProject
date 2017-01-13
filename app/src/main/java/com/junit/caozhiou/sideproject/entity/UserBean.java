@@ -1,25 +1,18 @@
 package com.junit.caozhiou.sideproject.entity;
 
 /**
- * Created by jesse on 15-6-24.
+ * Created by Administrator on 2017/1/11.
  */
-public class UserBean {
-    private String username;
-    private String password;
 
-    public String getUsername() {
-        return username;
+public class UserBean extends BaseBean {
+
+    private UserDataBean data;
+
+    public UserDataBean getData() {
+        return data;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setData(UserDataBean data) {
+        this.data = data;
     }
 }
