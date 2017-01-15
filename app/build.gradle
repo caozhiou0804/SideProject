@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            keyAlias 'last'
+            keyPassword '123456'
+            storeFile file('C:/Users/Administrator/Desktop/yunyuan.jks')
+            storePassword '123456'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion '23.0.3'
-
     defaultConfig {
         applicationId "com.junit.caozhiou.sideproject"
         minSdkVersion 14
@@ -11,12 +18,12 @@ android {
         versionCode 1
         versionName "1.0"
         manifestPlaceholders = [
-                GETUI_APP_ID : "HE5gSdcXjw5VBzoIdIfa32",
-                GETUI_APP_KEY : "fLOalCaRpN9NVO2G4aLVP9",
-                GETUI_APP_SECRET : "sspLr8JBsJ8gucd8HCszu",
-                PACKAGE_NAME : "com.junit.caozhiou.sideproject"
+                GETUI_APP_ID    : "HE5gSdcXjw5VBzoIdIfa32",
+                GETUI_APP_KEY   : "fLOalCaRpN9NVO2G4aLVP9",
+                GETUI_APP_SECRET: "sspLr8JBsJ8gucd8HCszu",
+                PACKAGE_NAME    : "com.junit.caozhiou.sideproject"
         ]
-        ndk {      abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "mips", "mips64","x86", "x86_64"    }
+        ndk { abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "mips", "mips64", "x86", "x86_64" }
     }
     buildTypes {
         release {
@@ -43,4 +50,5 @@ dependencies {
     compile 'com.umeng.analytics:analytics:6.0.6'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.getui:sdk:+'
+    compile files('libs/BaiduLBS_Android.jar')
 }

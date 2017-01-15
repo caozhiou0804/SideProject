@@ -1,9 +1,12 @@
 package com.junit.caozhiou.sideproject.app;
 
 import android.app.Application;
+import android.app.Service;
 import android.content.Context;
+import android.os.Vibrator;
 import android.text.TextUtils;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.common.internal.Supplier;
 import com.facebook.common.util.ByteConstants;
@@ -12,6 +15,7 @@ import com.facebook.imagepipeline.cache.MemoryCacheParams;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.junit.caozhiou.sideproject.crash.CrashHandler;
 import com.junit.caozhiou.sideproject.entity.UserDataBean;
+import com.junit.caozhiou.sideproject.service.LocationService;
 import com.junit.caozhiou.sideproject.okhttputil.OkHttpUtils;
 import com.junit.caozhiou.sideproject.okhttputil.https.HttpsUtils;
 import com.junit.caozhiou.sideproject.okhttputil.log.LoggerInterceptor;
@@ -63,6 +67,8 @@ public class MyApplication extends Application {
         this.userDataBean = userDataBean;
     }
 
+    public LocationService locationService;
+    public Vibrator mVibrator;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -94,6 +100,12 @@ public class MyApplication extends Application {
 
         initImage_facebook();
 
+        /***
+         * 初始化定位sdk，建议在Application中创建
+         */
+        locationService = new LocationService(getApplicationContext());
+        mVibrator =(Vibrator)getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
+        SDKInitializer.initialize(getApplicationContext());
     }
 
     /**
