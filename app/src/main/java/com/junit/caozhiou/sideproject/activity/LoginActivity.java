@@ -12,11 +12,15 @@ import com.igexin.sdk.PushManager;
 import com.junit.caozhiou.sideproject.R;
 import com.junit.caozhiou.sideproject.app.MyApplication;
 import com.junit.caozhiou.sideproject.constant.Constant;
+import com.junit.caozhiou.sideproject.entity.LoginEvent;
 import com.junit.caozhiou.sideproject.entity.UserBean;
 import com.junit.caozhiou.sideproject.log.L;
 import com.junit.caozhiou.sideproject.okhttputil.OkHttpUtils;
 import com.junit.caozhiou.sideproject.okhttputil.callback.StringCallback;
 import com.junit.caozhiou.sideproject.util.PreferenceUtil;
+import com.junit.caozhiou.sideproject.view.cloudview.CloudProgressDialog;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -177,12 +181,14 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.btn_login)
     Button btn_login;
 
+    private CloudProgressDialog cloudProgressDialog;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-
+        cloudProgressDialog = new CloudProgressDialog(LoginActivity.this, "让数据飞一会儿..");
     }
 
     @OnClick(R.id.btn_login)
@@ -196,28 +202,33 @@ public class LoginActivity extends AppCompatActivity {
         String url = Constant.SERVER_IP + "Userfeature/userLogin";
         username = input_name.getText().toString();
         password = input_password.getText().toString();
+        String clientId = MyApplication.getInstance().getClientId();
         OkHttpUtils
                 .post()
                 .url(url)
                 .addParams("phone", input_name.getText().toString())//
                 .addParams("password", input_password.getText().toString())//
+                .addParams("clientId", clientId)//
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         L.d("Splash", e.toString());
+                        cloudProgressDialog.cancel();
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
+                        cloudProgressDialog.cancel();
                         Gson gson = new Gson();
                         UserBean userBean = gson.fromJson(response, UserBean.class);
                         MyApplication.getInstance().setUserDataBean(userBean.getData());
                         PreferenceUtil.putString(Constant.USERNAME, username);
                         PreferenceUtil.putString(Constant.PASSWORD, password);
-                        PushManager.getInstance().bindAlias(getApplicationContext(),userBean.getData().getUserId());
+                        PushManager.getInstance().bindAlias(getApplicationContext(), userBean.getData().getUserId());
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
+                        EventBus.getDefault().post(new LoginEvent(LoginEvent.TYPE_LOGIN_SUCCESS));
                         finish();
                     }
                 });

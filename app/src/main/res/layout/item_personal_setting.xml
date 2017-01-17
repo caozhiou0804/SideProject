@@ -3,12 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:paddingLeft="10dp"
+    android:background="@drawable/pressed_backgorund_corner"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp">
 
     <ImageView
         android:id="@+id/iv_setting_cion"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginLeft="20dp" />
 
     <TextView
@@ -16,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="30dp"
+        android:textSize="15sp"
         android:textColor="@color/white" />
-
 </LinearLayout>

@@ -6,6 +6,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,9 +66,15 @@ public class SimpleRecycleViewFragment extends Fragment {
 
     private void reqUserList() {
         String url = Constant.SERVER_IP + "Userfeature/getAroundUsers";
+        String userId = "";
+        if (null != MyApplication.getInstance().getUserDataBean()
+                && !TextUtils.isEmpty(MyApplication.getInstance().getUserDataBean().getUserId())) {
+            userId = MyApplication.getInstance().getUserDataBean().getUserId();
+        }
         OkHttpUtils
                 .get()
                 .url(url)
+                .addParams("userId", userId)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -101,13 +108,14 @@ public class SimpleRecycleViewFragment extends Fragment {
             public void onItemClick(View view, int position) {
                 Toast.makeText(getActivity(), "点击了第" + position + "项", Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onFollowClick(UserDataBean userDataBean, int position) {
-                Toast.makeText(getActivity(), "用户" + userDataBean.getPhone() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "用户" + userDataBean.getPhone(), Toast.LENGTH_SHORT).show();
 
                 String userId_send = MyApplication.getInstance().getUserDataBean().getUserId();
                 String userId_accept = userDataBean.getUserId();
-                sendLoveMsg(userId_send,userId_accept);
+                sendLoveMsg(userId_send, userId_accept);
             }
         }, userBeanList);
         recycler_view_simple.setAdapter(mAdapter);
@@ -116,15 +124,16 @@ public class SimpleRecycleViewFragment extends Fragment {
 
     /**
      * 发送示爱信息接口
+     *
      * @param userId_send
      * @param userId_accept
      */
     private void sendLoveMsg(String userId_send, String userId_accept) {
-        String url = Constant.SERVER_IP+"Userfeature/sendFollows" ;
+        String url = Constant.SERVER_IP + "Userfeature/sendFollows";
         OkHttpUtils
                 .post()
                 .url(url)
-                .addParams("userId_send",userId_send)
+                .addParams("userId_send", userId_send)
                 .addParams("userId_accept", userId_accept)
                 .build()
                 .execute(new StringCallback() {
@@ -137,7 +146,7 @@ public class SimpleRecycleViewFragment extends Fragment {
                     public void onResponse(String response, int id) {
                         Gson gson = new Gson();
                         UserListBean userBean = gson.fromJson(response, UserListBean.class);
-                        MyToast.show(getActivity(),userBean.getMessage(),MyToast.LENGTH_LONG);
+                        MyToast.show(getActivity(), userBean.getMessage(), MyToast.LENGTH_LONG);
                     }
                 });
     }

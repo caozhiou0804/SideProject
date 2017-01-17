@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.junit.caozhiou.sideproject.R;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnMenuTabClickListener;
+import com.junit.caozhiou.sideproject.view.bottom.tabbar.BottomBar;
+import com.junit.caozhiou.sideproject.view.bottom.tabbar.OnMenuTabClickListener;
 
 public class HomeCenterFragment extends Fragment {
 

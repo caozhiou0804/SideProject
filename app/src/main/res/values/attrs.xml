@@ -187,5 +187,9 @@
         <!-- 自定义布局 -->
         <attr name="loop_layout" format="reference" />
     </declare-styleable>
-
+    <!--自定义云加载-->
+    <declare-styleable name="CloudView">
+        <!--所有图片放大缩小的百分比-->
+        <attr name="image_percent" format="float"/>
+    </declare-styleable>
 </resources>

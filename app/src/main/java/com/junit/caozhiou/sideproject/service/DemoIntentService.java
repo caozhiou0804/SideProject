@@ -1,9 +1,17 @@
 package com.junit.caozhiou.sideproject.service;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Message;
+import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.RemoteViews;
 
+import com.google.gson.Gson;
 import com.igexin.sdk.GTIntentService;
 import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
@@ -11,7 +19,10 @@ import com.igexin.sdk.message.FeedbackCmdMessage;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
 import com.igexin.sdk.message.SetTagCmdMessage;
-import com.junit.caozhiou.sideproject.util.MyToast;
+import com.junit.caozhiou.sideproject.R;
+import com.junit.caozhiou.sideproject.activity.HomeActivity;
+import com.junit.caozhiou.sideproject.app.MyApplication;
+import com.junit.caozhiou.sideproject.entity.GetuiBean;
 
 /**
  * 继承 GTIntentService 接收来自个推的消息, 所有消息在线程中回调, 如果注册了该服务, 则务必要在 AndroidManifest中声明, 否则无法接受消息<br>
@@ -53,7 +64,7 @@ public class DemoIntentService extends GTIntentService {
 
         Log.d(TAG, "onReceiveMessageData -> " + "appid = " + appid + "\ntaskid = " + taskid + "\nmessageid = " + messageid + "\npkg = " + pkg
                 + "\ncid = " + cid);
-        MyToast.show(context,"111111111111111111111",2000);
+
         if (payload == null) {
             Log.e(TAG, "receiver payload = null");
         } else {
@@ -66,6 +77,18 @@ public class DemoIntentService extends GTIntentService {
                 cnt++;
             }
             sendMessage(data, 0);
+            Intent intentAct = new Intent();
+            intentAct.setClass(context, HomeActivity.class);
+            intentAct.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            GetuiBean geTuiBean = null;
+            try {
+                geTuiBean = new Gson().fromJson(data, GetuiBean.class);
+
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+            showNotification(context, intentAct,geTuiBean);
         }
 
         Log.d(TAG, "----------------------------------------------------------------------------------------------");
@@ -74,7 +97,7 @@ public class DemoIntentService extends GTIntentService {
     @Override
     public void onReceiveClientId(Context context, String clientid) {
         Log.e(TAG, "onReceiveClientId -> " + "clientid = " + clientid);
-
+        MyApplication.getInstance().setClientId(clientid);
         sendMessage(clientid, 1);
     }
 
@@ -166,5 +189,47 @@ public class DemoIntentService extends GTIntentService {
         msg.what = what;
         msg.obj = data;
 //        DemoApplication.sendMessage(msg);
+    }
+
+    // 通知栏显示当前播放信息，利用通知和 PendingIntent来启动对应的activity
+    public void showNotification(Context context, Intent intent, GetuiBean geTuiBean) {
+        String title = "";
+        String content = "";
+        if (!TextUtils.isEmpty(geTuiBean.getMessage_title())) {
+            title = geTuiBean.getMessage_title();
+        }
+        if (!TextUtils.isEmpty(geTuiBean.getMessage_content())) {
+            content = geTuiBean.getMessage_content();
+        }
+
+        NotificationManager mNotificationManager = (NotificationManager) context
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                context);
+        builder.setAutoCancel(true);
+        Notification mNotification = builder.build();
+        mNotification.icon = R.drawable.icon_inner;// notification通知栏图标
+        mNotification.defaults = Notification.DEFAULT_SOUND;
+        mNotification.defaults = Notification.DEFAULT_VIBRATE;
+
+        // 自定义布局
+        RemoteViews contentView = new RemoteViews(context.getPackageName(),
+                R.layout.notification);
+        contentView.setImageViewResource(R.id.notification_icon,
+                R.drawable.icon_inner);
+        contentView.setTextViewText(R.id.notification_title, title);
+        contentView.setTextViewText(R.id.notification_name, content);
+        mNotification.contentView = contentView;
+        // PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
+        // intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
+                intent, PendingIntent.FLAG_CANCEL_CURRENT);// 解决华为推送消息不能跳转问题
+        // notifcation.flags = Notification.FLAG_NO_CLEAR;// 永久在通知栏里
+        mNotification.flags = Notification.FLAG_AUTO_CANCEL;
+        // 使用自定义下拉视图时，不需要再调用setLatestEventInfo()方法，但是必须定义contentIntent
+        mNotification.contentIntent = contentIntent;
+        mNotificationManager.notify((int) (System.currentTimeMillis() / 1000),
+                mNotification);
+
     }
 }

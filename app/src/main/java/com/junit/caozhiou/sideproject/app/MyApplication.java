@@ -59,6 +59,16 @@ public class MyApplication extends Application {
 
     private UserDataBean userDataBean;
 
+    private String clientId;
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
     public UserDataBean getUserDataBean() {
         return userDataBean;
     }

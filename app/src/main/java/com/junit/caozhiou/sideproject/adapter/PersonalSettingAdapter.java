@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.junit.caozhiou.sideproject.R;
-import com.junit.caozhiou.sideproject.entity.PersonalSettingData;
+import com.junit.caozhiou.sideproject.entity.PersonalLeftData;
 
 import java.util.List;
 
@@ -22,11 +22,11 @@ import java.util.List;
 public class PersonalSettingAdapter extends RecyclerView.Adapter<PersonalSettingAdapter.ViewHolder> {
 
     private Context ctx;
-    private List<PersonalSettingData> dataList;
+    private List<PersonalLeftData> dataList;
 
     private ItemClickListener clickListener;
 
-    public PersonalSettingAdapter(Context ctx, List<PersonalSettingData> dataList,ItemClickListener clickListener) {
+    public PersonalSettingAdapter(Context ctx, List<PersonalLeftData> dataList, ItemClickListener clickListener) {
         this.dataList = dataList;
         this.ctx = ctx;
         this.clickListener=clickListener;
@@ -41,7 +41,7 @@ public class PersonalSettingAdapter extends RecyclerView.Adapter<PersonalSetting
 
     @Override
     public void onBindViewHolder(PersonalSettingAdapter.ViewHolder holder, final int position) {
-        PersonalSettingData data = dataList.get(position);
+        PersonalLeftData data = dataList.get(position);
         if (null == data)
             return;
         holder.iv_setting_cion.setImageResource(data.getIcon_res());
@@ -49,7 +49,7 @@ public class PersonalSettingAdapter extends RecyclerView.Adapter<PersonalSetting
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clickListener.onItemClick(position);
+                clickListener.onItemClick(dataList.get(position));
             }
         });
     }
@@ -76,6 +76,6 @@ public class PersonalSettingAdapter extends RecyclerView.Adapter<PersonalSetting
 
     public interface ItemClickListener {
 
-        void onItemClick(int position);
+        void onItemClick(PersonalLeftData personalLeftData);
     }
 }

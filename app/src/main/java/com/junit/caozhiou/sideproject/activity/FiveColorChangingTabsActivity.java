@@ -8,18 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.junit.caozhiou.sideproject.R;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnMenuTabClickListener;
+import com.junit.caozhiou.sideproject.view.bottom.tabbar.BottomBar;
+import com.junit.caozhiou.sideproject.view.bottom.tabbar.OnMenuTabClickListener;
 
 /**
  * Created by iiro on 7.6.2016.

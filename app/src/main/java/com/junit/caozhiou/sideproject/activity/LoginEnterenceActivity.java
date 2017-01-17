@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.junit.caozhiou.sideproject.R;
+import com.junit.caozhiou.sideproject.entity.LoginEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,8 +36,16 @@ public class LoginEnterenceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_enterence);
         ButterKnife.bind(this);
-
+        //注册
+        if (null != EventBus.getDefault())
+            EventBus.getDefault().register(this);
         iv_outer.startAnimation(rotaAnimation());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @OnClick(R.id.btn_to_login)
@@ -42,12 +54,23 @@ public class LoginEnterenceActivity extends AppCompatActivity {
                 LoginActivity.class);
         startActivity(intent);
     }
+
+    @Subscribe
+    public void onEventMainThread(LoginEvent event) {
+        if (LoginEvent.TYPE_LOGIN_SUCCESS.equals(event.getType())) {
+            finish();
+        }
+
+    }
+
     @OnClick(R.id.btn_to_registe)
     public void toRegiste(View view) {
         Intent intent = new Intent(LoginEnterenceActivity.this,
                 RegisterActivity.class);
         startActivity(intent);
+
     }
+
     /**
      * 不间断旋转动画
      *

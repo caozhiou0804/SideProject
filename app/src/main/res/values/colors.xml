@@ -67,4 +67,8 @@
     <color name="primaryDark">#00796b</color>
     <color name="backgroundColor">@color/background_material_dark</color>
     <color name="backgroundColorPress">@color/accent_material_dark</color>
+    <!--bottom_tabbar-->
+    <color name="bb_inActiveBottomBarItemColor">#747474</color>
+    <color name="bb_darkBackgroundColor">#212121</color>
+    <color name="bb_tabletRightBorderDark">#505050</color>
 </resources>

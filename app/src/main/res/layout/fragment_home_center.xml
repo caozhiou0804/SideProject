@@ -8,10 +8,10 @@
         android:layout_height="55dp"
         android:layout_alignParentBottom="true">
 
-        <com.roughike.bottombar.BottomBar
+        <com.junit.caozhiou.sideproject.view.bottom.tabbar.BottomBar
             android:id="@+id/bottom_bar_home"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></com.roughike.bottombar.BottomBar>
+            android:layout_height="wrap_content"></com.junit.caozhiou.sideproject.view.bottom.tabbar.BottomBar>
 
     </LinearLayout>
 

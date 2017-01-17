@@ -1,60 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_left_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/androidColorA"
     android:orientation="vertical">
 
 
     <RelativeLayout
+        android:id="@+id/rl_personal_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/tv_color"
+        android:background="@drawable/pressed_backgorund_corner"
         android:gravity="center_vertical"
-        android:paddingBottom="35dp"
+        android:paddingBottom="50dp"
         android:paddingLeft="20dp"
-        android:paddingTop="35dp">
+        android:paddingTop="50dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/sdv_person_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_centerHorizontal="true"
+            fresco:actualImageScaleType="focusCrop"
+            fresco:backgroundImage="@android:color/holo_orange_light"
+            fresco:fadeDuration="5000"
+            fresco:failureImage="@drawable/userphoto_default"
+            fresco:failureImageScaleType="focusCrop"
             fresco:placeholderImage="@drawable/userphoto_default"
+            fresco:placeholderImageScaleType="focusCrop"
+            fresco:progressBarAutoRotateInterval="5000"
+            fresco:progressBarImage="@mipmap/icon_progress_bar"
+            fresco:progressBarImageScaleType="focusCrop"
+            fresco:retryImage="@mipmap/icon_retry"
+            fresco:retryImageScaleType="focusCrop"
+            fresco:roundAsCircle="true"
+            fresco:roundBottomLeft="true"
+            fresco:roundBottomRight="true"
+            fresco:roundTopLeft="true"
+            fresco:roundTopRight="true"
             fresco:roundedCornerRadius="40dp"
-            fresco:roundingBorderColor="@color/androidColorB" />
-      <!--  <ImageView
-            android:id="@+id/sdv_person_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            fresco:roundingBorderColor="@color/androidColorB"
+            fresco:roundingBorderWidth="1dp" />
+        <!--  <ImageView
+              android:id="@+id/sdv_person_icon"
+              android:layout_width="60dp"
+              android:layout_height="60dp"
+              android:layout_centerHorizontal="true"
+              android:src="@drawable/userphoto_default" />-->
+
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sdv_person_icon"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/userphoto_default" />-->
+            android:layout_marginTop="10dp"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-
-
-            <TextView
-                android:id="@+id/tv_user_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@color/white"
-                android:layout_below="@id/sdv_person_icon"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_level"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/tv_user_name"
-                android:layout_marginTop="5dp"
-                android:text="点击查看/编辑"
-                android:textColor="@color/gray_bg"
-                android:textSize="13sp" />
+        <TextView
+            android:id="@+id/tv_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_user_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="点击查看/编辑"
+            android:textColor="@color/gray_bg"
+            android:textSize="13sp" />
 
 
     </RelativeLayout>
@@ -62,6 +79,6 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_personal_setting"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"></android.support.v7.widget.RecyclerView>
-
+        android:layout_height="fill_parent"
+        android:background="@color/transparent"></android.support.v7.widget.RecyclerView>
 </LinearLayout>

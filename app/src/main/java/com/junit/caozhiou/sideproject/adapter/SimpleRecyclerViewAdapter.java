@@ -196,7 +196,7 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                 }
             });
         }
-        startScaleAndTranslate(holder.itemView);
+//        startScaleAndTranslate(holder.itemView);
     }
 
     public void closeOpenedSwipeItemLayoutWithAnim() {

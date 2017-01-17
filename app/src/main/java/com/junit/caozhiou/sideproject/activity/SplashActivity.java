@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.baidu.location.BDLocation;
@@ -20,11 +19,11 @@ import com.junit.caozhiou.sideproject.app.MyApplication;
 import com.junit.caozhiou.sideproject.constant.Constant;
 import com.junit.caozhiou.sideproject.entity.UserBean;
 import com.junit.caozhiou.sideproject.log.L;
-import com.junit.caozhiou.sideproject.service.LocationService;
 import com.junit.caozhiou.sideproject.okhttputil.OkHttpUtils;
 import com.junit.caozhiou.sideproject.okhttputil.callback.StringCallback;
 import com.junit.caozhiou.sideproject.service.DemoIntentService;
 import com.junit.caozhiou.sideproject.service.DemoPushService;
+import com.junit.caozhiou.sideproject.service.LocationService;
 import com.junit.caozhiou.sideproject.util.PreferenceUtil;
 
 import okhttp3.Call;
@@ -34,6 +33,7 @@ public class SplashActivity extends FragmentActivity {
     private static final int ANIM_LAST_TIME = 3000;
     private ImageView imageView_splash;
     private LocationService locationService;
+    private boolean isFirstIn = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +103,7 @@ public class SplashActivity extends FragmentActivity {
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             L.d("Splash", e.toString());
+                            jumpPage(false);
                         }
 
                         @Override
@@ -126,7 +127,7 @@ public class SplashActivity extends FragmentActivity {
         //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考其他示例的activity，都是通过此种方式获取locationservice实例的
         locationService.registerListener(mListener);
         //注册监听
-        int type =  0;
+        int type = 0;
         if (type == 0) {
             locationService.setLocationOption(locationService.getDefaultLocationClientOption());
         } else if (type == 1) {
@@ -135,6 +136,7 @@ public class SplashActivity extends FragmentActivity {
         locationService.start();// 定位SDK
         // start之后会默认发起一次定位请求，开发者无须判断isstart并主动调用request
     }
+
     /***
      * Stop location service
      */
@@ -145,6 +147,7 @@ public class SplashActivity extends FragmentActivity {
         locationService.stop(); //停止定位服务
         super.onStop();
     }
+
     /**
      * 定位结果回调，重写onReceiveLocation方法，可以直接拷贝如下代码到自己工程中修改
      */
@@ -232,9 +235,13 @@ public class SplashActivity extends FragmentActivity {
                     sb.append("\ndescribe : ");
                     sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
                 }
-                L.d("Splash",sb.toString());
+                L.d("Splash", sb.toString());
             }
-            login();
+
+            if (isFirstIn){//只允许跳转一次
+                login();
+                isFirstIn = false;
+            }
         }
 
     };
