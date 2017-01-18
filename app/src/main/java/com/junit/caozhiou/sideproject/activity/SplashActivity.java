@@ -108,7 +108,9 @@ public class SplashActivity extends FragmentActivity {
                         public void onResponse(UserBean userBean, int id) {
 //                            MyApplication.getInstance().setUserDataBean(userBean.getData());
                             MyApplication.getInstance().setUserDataBean(userBean.getData());
-                            jumpPage(true);
+                            if(userBean.getStatus()=="true"){
+                                jumpPage(true);
+                            }
                         }
                     });
 
