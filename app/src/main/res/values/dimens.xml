@@ -38,5 +38,4 @@
     <dimen name="image_size">120dp</dimen>
     <dimen name="evaluation">10dp</dimen>
     <dimen name="order_size">12sp</dimen>
-    <dimen name="bb_height">56dp</dimen>
 </resources>
