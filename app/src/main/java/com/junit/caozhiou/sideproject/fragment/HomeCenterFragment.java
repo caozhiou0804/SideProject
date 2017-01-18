@@ -58,7 +58,7 @@ public class HomeCenterFragment extends Fragment {
         fragments.add(tabInfoFragment);
         fragments.add(functionsFragment);
         fragments.add(oneFragment);
-        fragments.add(new OneFragment());
+        fragments.add(new MineFragment());
 
         fragmentTabUtils = new FragmentTabUtils(viewPager, getChildFragmentManager(), fragments, rg_tab);
 

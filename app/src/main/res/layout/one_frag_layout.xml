@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_content"
-        android:text="第一个Fragment..."
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <com.junit.caozhiou.sideproject.view.MyScollView
+        android:id="@+id/sv_one"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/layout_header_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_default_height"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_header" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1000dp" />
+        </LinearLayout>
+    </com.junit.caozhiou.sideproject.view.MyScollView>
 </LinearLayout>
