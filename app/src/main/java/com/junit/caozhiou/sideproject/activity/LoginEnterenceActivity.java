@@ -2,6 +2,7 @@ package com.junit.caozhiou.sideproject.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -20,7 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginEnterenceActivity extends AppCompatActivity {
+public class LoginEnterenceActivity extends FragmentActivity {
 
     @Bind(R.id.iv_outer)
     ImageView iv_outer;

@@ -96,7 +96,8 @@
             android:theme="@style/AppTheme" />
         <!-- 多图选择 -->
         <activity android:name=".activity.UploadFileActivity" />
-        <activity android:name=".activity.LoginEnterenceActivity" />
+        <activity android:name=".activity.LoginEnterenceActivity"
+            />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.RegisterActivity" />
 

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.Poi;
+import com.google.gson.Gson;
 import com.igexin.sdk.PushManager;
 import com.junit.caozhiou.sideproject.R;
 import com.junit.caozhiou.sideproject.app.MyApplication;
@@ -19,8 +20,7 @@ import com.junit.caozhiou.sideproject.constant.Constant;
 import com.junit.caozhiou.sideproject.entity.UserBean;
 import com.junit.caozhiou.sideproject.log.L;
 import com.junit.caozhiou.sideproject.okhttputil.OkHttpUtils;
-import com.junit.caozhiou.sideproject.okhttputil.callback.GenericsCallback;
-import com.junit.caozhiou.sideproject.okhttputiltest.JsonGenericsSerializator;
+import com.junit.caozhiou.sideproject.okhttputil.callback.StringCallback;
 import com.junit.caozhiou.sideproject.service.DemoIntentService;
 import com.junit.caozhiou.sideproject.service.DemoPushService;
 import com.junit.caozhiou.sideproject.service.LocationService;
@@ -99,36 +99,37 @@ public class SplashActivity extends FragmentActivity {
                     .addParams("phone", PreferenceUtil.getString(Constant.USERNAME))//
                     .addParams("password", PreferenceUtil.getString(Constant.PASSWORD))//
                     .build()
-                    .execute(new GenericsCallback<UserBean>(new JsonGenericsSerializator()) {
-                        @Override
-                        public void onError(Call call, Exception e, int id) {
-                        }
-
-                        @Override
-                        public void onResponse(UserBean userBean, int id) {
-//                            MyApplication.getInstance().setUserDataBean(userBean.getData());
-                            MyApplication.getInstance().setUserDataBean(userBean.getData());
-                            if(userBean.getStatus()=="true"){
-                                jumpPage(true);
-                            }
-                        }
-                    });
-
-//                            new StringCallback() {
+                    .execute(
+//                            new GenericsCallback<UserBean>(new JsonGenericsSerializator()) {
 //                        @Override
 //                        public void onError(Call call, Exception e, int id) {
-//                            L.d("Splash", e.toString());
-//                            jumpPage(false);
 //                        }
 //
 //                        @Override
-//                        public void onResponse(String response, int id) {
-//                            Gson gson = new Gson();
-//                            UserBean userBean = gson.fromJson(response, UserBean.class);
+//                        public void onResponse(UserBean userBean, int id) {
+////                            MyApplication.getInstance().setUserDataBean(userBean.getData());
 //                            MyApplication.getInstance().setUserDataBean(userBean.getData());
-//                            jumpPage(true);
+//                            if(userBean.getStatus()=="true"){
+//                                jumpPage(true);
+//                            }
 //                        }
 //                    });
+
+                            new StringCallback() {
+                                @Override
+                                public void onError(Call call, Exception e, int id) {
+                                    L.d("Splash", e.toString());
+                                    jumpPage(false);
+                                }
+
+                                @Override
+                                public void onResponse(String response, int id) {
+                                    Gson gson = new Gson();
+                                    UserBean userBean = gson.fromJson(response, UserBean.class);
+                                    MyApplication.getInstance().setUserDataBean(userBean.getData());
+                                    jumpPage(true);
+                                }
+                            });
         }
     }
 

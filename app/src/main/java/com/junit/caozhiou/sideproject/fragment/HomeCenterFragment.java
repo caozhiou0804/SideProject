@@ -2,22 +2,37 @@ package com.junit.caozhiou.sideproject.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.RadioGroup;
 
 import com.junit.caozhiou.sideproject.R;
+import com.junit.caozhiou.sideproject.util.FragmentTabUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class HomeCenterFragment extends Fragment {
 
     private View contentView;
-    private RelativeLayout rl_home_container;
 
-    Fragment f = null;
+    @Bind(R.id.rg_tab)
+    RadioGroup rg_tab;
+    @Bind(R.id.viewPager)
+    ViewPager viewPager;
+
+    List<Fragment> fragments = new ArrayList<Fragment>();
+    FragmentTabUtils fragmentTabUtils;
+    TabInfoFragment tabInfoFragment=new TabInfoFragment();
+    FunctionsFragment functionsFragment=new FunctionsFragment();
+    OneFragment oneFragment=new OneFragment();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,8 +45,8 @@ public class HomeCenterFragment extends Fragment {
         // Inflate the layout for this fragment
         if (null == contentView) {
             contentView = inflater.inflate(R.layout.fragment_home_center, container, false);
-            initData();
-            initViews();
+            ButterKnife.bind(this, contentView);
+            initview();
 
         }
         return contentView;
@@ -39,16 +54,15 @@ public class HomeCenterFragment extends Fragment {
 
     }
 
-    private void initViews() {
-        rl_home_container = (RelativeLayout) contentView.findViewById(R.id.rl_home_container);
+    private void initview() {
+        fragments.add(tabInfoFragment);
+        fragments.add(functionsFragment);
+        fragments.add(oneFragment);
+        fragments.add(new OneFragment());
+
+        fragmentTabUtils = new FragmentTabUtils(viewPager, getChildFragmentManager(), fragments, rg_tab);
+
     }
 
-    private Map<Integer, Fragment> fragmentMap = new HashMap<>();
 
-    private void initData() {
-
-    }
-
-    public void changeTabFragment(int menuItemId, boolean isReselection) {
-    }
 }

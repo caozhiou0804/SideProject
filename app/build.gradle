@@ -5,7 +5,7 @@ android {
         debug {
             keyAlias 'last'
             keyPassword '123456'
-            storeFile file('C:/Users/Administrator/Desktop/yunyuan.jks')
+            storeFile file('yunyuan.jks')
             storePassword '123456'
         }
     }

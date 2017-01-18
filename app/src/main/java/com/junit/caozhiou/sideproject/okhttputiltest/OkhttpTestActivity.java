@@ -30,7 +30,7 @@ import okhttp3.CookieJar;
 import okhttp3.MediaType;
 import okhttp3.Request;
 
-public class OkHttpTestActivity extends AppCompatActivity {
+public class OkhttpTestActivity extends AppCompatActivity {
 
     private String mBaseUrl = "http://192.168.111.2:8080/WebApp/";
 
@@ -65,10 +65,10 @@ public class OkHttpTestActivity extends AppCompatActivity {
 
             switch (id) {
                 case 100:
-                    Toast.makeText(OkHttpTestActivity.this, "http", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OkhttpTestActivity.this, "http", Toast.LENGTH_SHORT).show();
                     break;
                 case 101:
-                    Toast.makeText(OkHttpTestActivity.this, "https", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OkhttpTestActivity.this, "https", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -123,7 +123,7 @@ public class OkHttpTestActivity extends AppCompatActivity {
     public void postFile(View view) {
         File file = new File(Environment.getExternalStorageDirectory(), "messenger_01.png");
         if (!file.exists()) {
-            Toast.makeText(OkHttpTestActivity.this, "文件不存在，请修改文件路径", Toast.LENGTH_SHORT).show();
+            Toast.makeText(OkhttpTestActivity.this, "文件不存在，请修改文件路径", Toast.LENGTH_SHORT).show();
             return;
         }
         String url = mBaseUrl + "user!postFile";
@@ -227,7 +227,7 @@ public class OkHttpTestActivity extends AppCompatActivity {
 
         File file = new File(Environment.getExternalStorageDirectory(), "messenger_01.png");
         if (!file.exists()) {
-            Toast.makeText(OkHttpTestActivity.this, "文件不存在，请修改文件路径", Toast.LENGTH_SHORT).show();
+            Toast.makeText(OkhttpTestActivity.this, "文件不存在，请修改文件路径", Toast.LENGTH_SHORT).show();
             return;
         }
         Map<String, String> params = new HashMap<>();
@@ -254,7 +254,7 @@ public class OkHttpTestActivity extends AppCompatActivity {
         File file = new File(Environment.getExternalStorageDirectory(), "messenger_01.png");
         File file2 = new File(Environment.getExternalStorageDirectory(), "test1#.txt");
         if (!file.exists()) {
-            Toast.makeText(OkHttpTestActivity.this, "文件不存在，请修改文件路径", Toast.LENGTH_SHORT).show();
+            Toast.makeText(OkhttpTestActivity.this, "文件不存在，请修改文件路径", Toast.LENGTH_SHORT).show();
             return;
         }
         Map<String, String> params = new HashMap<>();

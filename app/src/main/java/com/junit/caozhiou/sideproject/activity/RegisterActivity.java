@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response, int id) {
                         Gson gson = new Gson();
-                        Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
 
