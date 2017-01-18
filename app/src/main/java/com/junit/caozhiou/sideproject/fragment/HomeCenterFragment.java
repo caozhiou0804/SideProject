@@ -29,9 +29,6 @@ public class HomeCenterFragment extends Fragment {
 
     List<Fragment> fragments = new ArrayList<Fragment>();
     FragmentTabUtils fragmentTabUtils;
-    TabInfoFragment tabInfoFragment=new TabInfoFragment();
-    FunctionsFragment functionsFragment=new FunctionsFragment();
-    OneFragment oneFragment=new OneFragment();
 
 
     @Override
@@ -55,9 +52,9 @@ public class HomeCenterFragment extends Fragment {
     }
 
     private void initview() {
-        fragments.add(tabInfoFragment);
-        fragments.add(functionsFragment);
-        fragments.add(oneFragment);
+        fragments.add(new TabInfoFragment());
+        fragments.add(new FunctionsFragment());
+        fragments.add(new OneFragment());
         fragments.add(new MineFragment());
 
         fragmentTabUtils = new FragmentTabUtils(viewPager, getChildFragmentManager(), fragments, rg_tab);
