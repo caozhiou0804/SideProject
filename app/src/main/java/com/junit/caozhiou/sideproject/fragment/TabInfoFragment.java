@@ -54,8 +54,8 @@ public class TabInfoFragment extends Fragment {
             switch (i) {
 
                 case 0:
-                    SimpleRecycleViewFragment simpleRecycleViewFragment = new SimpleRecycleViewFragment();
-                    fragments.add(simpleRecycleViewFragment);
+                    NearByPersonFragment nearByPersonFragment = new NearByPersonFragment();
+                    fragments.add(nearByPersonFragment);
                     break;
                 case 1:
                     PullToRefreshRecyclerViewFragment pullToRefreshRecyclerViewFragment = new PullToRefreshRecyclerViewFragment();

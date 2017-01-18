@@ -1,14 +1,14 @@
 package com.junit.caozhiou.sideproject.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.junit.caozhiou.sideproject.R;
 import com.junit.caozhiou.sideproject.fragment.HomeCenterFragment;
 import com.junit.caozhiou.sideproject.fragment.PersonLeftFragment;
 import com.junit.caozhiou.sideproject.view.SlidingMenu;
 
-public class HomeActivity extends FragmentActivity {
+public class HomeActivity extends AppCompatActivity{
 
     private SlidingMenu mSlidingMenu;
 
@@ -45,6 +45,12 @@ public class HomeActivity extends FragmentActivity {
                             homeCenterFragment).commit();
         }
         mSlidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+
     }
 
+    public void toggleLeftSliding(boolean animate) {
+        mSlidingMenu.toggle(animate);
+    }
 }
+
+

@@ -2,10 +2,12 @@ package com.junit.caozhiou.sideproject.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.junit.caozhiou.sideproject.R;
+import com.junit.caozhiou.sideproject.activity.HomeActivity;
 import com.junit.caozhiou.sideproject.adapter.SimpleRecyclerViewAdapter;
 import com.junit.caozhiou.sideproject.app.MyApplication;
 import com.junit.caozhiou.sideproject.constant.Constant;
@@ -28,23 +31,30 @@ import com.junit.caozhiou.sideproject.view.RecycleViewDivider;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import okhttp3.Call;
 
 /**
  * 普通recycleView
  */
-public class SimpleRecycleViewFragment extends Fragment {
+public class NearByPersonFragment extends Fragment {
 
 
     private View contentView;
 
-    private RecyclerView recycler_view_simple;
+    @Bind(R.id.recycler_view_simple)
+    RecyclerView recycler_view_simple;
+    @Bind(R.id.toolbar_nearby_person)
+    Toolbar toolbar_nearby_person;
+
 
     private LinearLayoutManager mLayoutManager;
 
     private SimpleRecyclerViewAdapter mAdapter;
 
     private List<UserDataBean> userBeanList = new ArrayList<UserDataBean>();
+    private AppCompatActivity activity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,10 +65,25 @@ public class SimpleRecycleViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        activity = (AppCompatActivity) getActivity();
         if (null == contentView) {
 
-            contentView = inflater.inflate(R.layout.fragment_simple_recycle_view, container, false);
+            contentView = inflater.inflate(R.layout.fragment_nearby_person, container, false);
+            ButterKnife.bind(this, contentView);
         }
+        if (toolbar_nearby_person != null) {
+
+            activity.setSupportActionBar(toolbar_nearby_person);
+            toolbar_nearby_person.setTitle("");
+            toolbar_nearby_person.setNavigationIcon(R.drawable.ic_reorder_grey_500_24dp);
+            toolbar_nearby_person.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   ((HomeActivity) activity).toggleLeftSliding(true);
+                }
+            });
+        }
+
         initView();
 
         return contentView;
@@ -93,7 +118,6 @@ public class SimpleRecycleViewFragment extends Fragment {
     }
 
     private void initView() {
-        recycler_view_simple = (RecyclerView) contentView.findViewById(R.id.recycler_view_simple);
         recycler_view_simple.setHasFixedSize(true);
         //1.LinearLayoutManager 线性布局类型
         mLayoutManager = new LinearLayoutManager(getActivity());

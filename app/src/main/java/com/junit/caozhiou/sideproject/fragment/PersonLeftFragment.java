@@ -75,8 +75,6 @@ public class PersonLeftFragment extends Fragment {
         //注册
         if (null != EventBus.getDefault())
             EventBus.getDefault().register(this);
-
-
         return view;
 
 

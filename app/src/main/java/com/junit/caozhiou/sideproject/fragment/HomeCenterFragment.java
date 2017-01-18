@@ -2,7 +2,6 @@ package com.junit.caozhiou.sideproject.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +29,6 @@ public class HomeCenterFragment extends Fragment {
     List<Fragment> fragments = new ArrayList<Fragment>();
     FragmentTabUtils fragmentTabUtils;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +50,7 @@ public class HomeCenterFragment extends Fragment {
     }
 
     private void initview() {
-        fragments.add(new TabInfoFragment());
+        fragments.add(new NearByPersonFragment());
         fragments.add(new FunctionsFragment());
         fragments.add(new OneFragment());
         fragments.add(new MineFragment());
