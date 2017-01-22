@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -56,6 +57,7 @@
                         android:text=""
                         android:textColor="@color/white"
                         android:textSize="13sp" />
+
                 </LinearLayout>
 
                 <TextView
@@ -65,6 +67,14 @@
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/shape_purple_bg"
                     android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
+                <Button
+                    android:id="@+id/btn_user_age_personal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:text="关注"
                     android:textColor="@color/white"
                     android:textSize="13sp" />
             </LinearLayout>

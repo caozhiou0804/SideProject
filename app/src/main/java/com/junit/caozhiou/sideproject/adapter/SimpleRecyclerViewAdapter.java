@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -171,10 +172,10 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             intiViewPagerData();
             viewPagerViewHolder.adloop_act_adloopview.refreshData(loopData);
             viewPagerViewHolder.adloop_act_adloopview.startAutoLoop();
-        } else if (holder instanceof FootViewHolder) {//
+        } else if (holder instanceof FootViewHolder) {
             FootViewHolder footViewHolder = (FootViewHolder) holder;
 //            final SwipeItemLayout swipeRoot = footViewHolder.swipeItemLayout;
-            UserDataBean userDataBean = userBeanList.get(position - 1);
+           final UserDataBean userDataBean = userBeanList.get(position - 1);
             if (null != userDataBean) {
                 if (!TextUtils.isEmpty(userDataBean.getUsername())) {//姓名
                     footViewHolder.tv_user_name_personal.setText(userDataBean.getUsername());
@@ -233,6 +234,12 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                 }
 
 
+                footViewHolder.btn_user_age_personal.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onRecyclerItemClickListener.onFollowClick(userDataBean, position - 1);
+                    }
+                });
             }
         }
 
@@ -344,7 +351,7 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
         private TextView tv_user_age_personal;//年龄
         private TextView tv_user_xingzuo_personal;//星座
         private TextView tv_user_location_personal;//位置信息和活跃信息
-
+       private Button btn_user_age_personal;
 //        private SwipeItemLayout swipeItemLayout;
 
         public FootViewHolder(View view) {
@@ -354,6 +361,7 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             tv_user_age_personal = (TextView) view.findViewById(R.id.tv_user_age_personal);
             tv_user_xingzuo_personal = (TextView) view.findViewById(R.id.tv_user_xingzuo_personal);
             tv_user_location_personal = (TextView) view.findViewById(R.id.tv_user_location_personal);
+            btn_user_age_personal =  (Button) view.findViewById(R.id.btn_user_age_personal);
 //            swipeItemLayout = (SwipeItemLayout) view.findViewById(R.id.item_contact_swipe_root);
         }
     }
