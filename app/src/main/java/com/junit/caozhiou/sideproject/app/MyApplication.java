@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Vibrator;
 import android.text.TextUtils;
 
+import com.baidu.location.BDLocationListener;
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.common.internal.Supplier;
@@ -58,8 +59,7 @@ public class MyApplication extends Application {
     }
 
     private UserDataBean userDataBean;
-
-    private String clientId;
+    private String clientId;//个推当前设备当前用户id
 
     public String getClientId() {
         return clientId;
@@ -94,8 +94,8 @@ public class MyApplication extends Application {
 
 //        CookieJarImpl cookieJar1 = new CookieJarImpl(new MemoryCookieStore());
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(60000L, TimeUnit.MILLISECONDS)
-                .readTimeout(60000L, TimeUnit.MILLISECONDS)
+                .connectTimeout(20000L, TimeUnit.MILLISECONDS)
+                .readTimeout(20000L, TimeUnit.MILLISECONDS)
                 .addInterceptor(new LoggerInterceptor("TAG"))
 //                .cookieJar(cookieJar1)
                 .hostnameVerifier(new HostnameVerifier() {
@@ -180,5 +180,29 @@ public class MyApplication extends Application {
             Fresco.initialize(this);
     }
 
+    private BDLocationListener mListener;
+    /**
+     * 启动定位服务
+     * @param mListener 定位回调监听
+     */
+    public void startLocationService(BDLocationListener mListener){
+        this.mListener =mListener;
+        //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考其他示例的activity，都是通过此种方式获取locationservice实例的
+        locationService.registerListener(mListener);
+        //注册监听
+        locationService.setLocationOption(locationService.getDefaultLocationClientOption());
+//        int type = 0;
+//        if (type == 0) {
+//            locationService.setLocationOption(locationService.getDefaultLocationClientOption());
+//        } else if (type == 1) {
+//            locationService.setLocationOption(locationService.getOption());
+//        }
+        locationService.start();// 定位SDK
+    }
+
+    public void stopLocationService(){
+        locationService.unregisterListener(mListener); //注销掉监听
+        locationService.stop(); //停止定位服务
+    };
 
 }

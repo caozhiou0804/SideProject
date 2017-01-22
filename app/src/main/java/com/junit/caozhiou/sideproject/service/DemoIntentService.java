@@ -5,10 +5,13 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.RemoteViews;
 
 import com.google.gson.Gson;
@@ -23,6 +26,7 @@ import com.junit.caozhiou.sideproject.R;
 import com.junit.caozhiou.sideproject.activity.HomeActivity;
 import com.junit.caozhiou.sideproject.app.MyApplication;
 import com.junit.caozhiou.sideproject.entity.GetuiBean;
+import com.junit.caozhiou.sideproject.util.MyDialog;
 
 /**
  * 继承 GTIntentService 接收来自个推的消息, 所有消息在线程中回调, 如果注册了该服务, 则务必要在 AndroidManifest中声明, 否则无法接受消息<br>
@@ -88,10 +92,38 @@ public class DemoIntentService extends GTIntentService {
             } catch (Exception e) {
                 // TODO: handle exception
             }
-            showNotification(context, intentAct,geTuiBean);
+//            showNotification(context, intentAct,geTuiBean);
+            showDialog(context,geTuiBean);
         }
 
         Log.d(TAG, "----------------------------------------------------------------------------------------------");
+    }
+
+    Handler mHandler = new Handler();
+
+    /**
+     * 弹出dialog
+     * @param ctx
+     * @param geTuiBean
+     */
+    private void showDialog(final Context ctx, GetuiBean geTuiBean) {
+
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                final MyDialog dialog = new MyDialog(ctx);
+                dialog.getWindow().setType((WindowManager.LayoutParams.TYPE_SYSTEM_ALERT));
+                dialog.onButton1Listener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        // TODO Auto-generated method stub
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        });
     }
 
     @Override

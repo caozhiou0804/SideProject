@@ -105,14 +105,19 @@ public class NearByPersonFragment extends Fragment {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         L.d("Splash", e.toString());
+                        MyToast.show(getActivity(), ""+e, 1500);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         Gson gson = new Gson();
                         UserListBean userListBean = gson.fromJson(response, UserListBean.class);
-                        userBeanList.addAll(userListBean.getData());
-                        mAdapter.notifyDataSetChanged();
+                        if("0".equals(userListBean.getStatus())){
+                            userBeanList.addAll(userListBean.getData());
+                            mAdapter.notifyDataSetChanged();
+                        }else{
+                            MyToast.show(getActivity(), userListBean.getMessage(), 1500);
+                        }
                     }
                 });
     }
@@ -164,6 +169,7 @@ public class NearByPersonFragment extends Fragment {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         L.d("Splash", e.toString());
+                        MyToast.show(getActivity(), e+"", 1500);
                     }
 
                     @Override

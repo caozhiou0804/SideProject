@@ -12,6 +12,7 @@ import com.junit.caozhiou.sideproject.view.MyScollView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 当前类注释:第一个Fragment
@@ -36,5 +37,9 @@ public class OneFragment extends Fragment {
     private void initview() {
         sv_one.setZoomRatio(MyScollView.ZOOM_X2);
         sv_one.setParallaxImageView(layout_header_image);
+    }
+    @OnClick(R.id.layout_header_image)
+    public void uploadFile(){
+
     }
 }

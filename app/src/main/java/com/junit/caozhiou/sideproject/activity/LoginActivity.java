@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
 import com.google.gson.Gson;
 import com.igexin.sdk.PushManager;
 import com.junit.caozhiou.sideproject.R;
@@ -16,9 +18,8 @@ import com.junit.caozhiou.sideproject.entity.LoginEvent;
 import com.junit.caozhiou.sideproject.entity.UserBean;
 import com.junit.caozhiou.sideproject.log.L;
 import com.junit.caozhiou.sideproject.okhttputil.OkHttpUtils;
-import com.junit.caozhiou.sideproject.okhttputil.callback.GenericsCallback;
 import com.junit.caozhiou.sideproject.okhttputil.callback.StringCallback;
-import com.junit.caozhiou.sideproject.okhttputiltest.JsonGenericsSerializator;
+import com.junit.caozhiou.sideproject.util.MyToast;
 import com.junit.caozhiou.sideproject.util.PreferenceUtil;
 import com.junit.caozhiou.sideproject.view.cloudview.CloudProgressDialog;
 
@@ -33,145 +34,6 @@ import okhttp3.Call;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
-
-
-//    // UI references.
-//    private AutoCompleteTextView mEmailView;
-//    private EditText mPasswordView;
-//    private View mProgressView;
-//    private View mLoginFormView;
-//
-//    private EditText username, password;
-//    private Button login, clear, upload;
-//    private ImageView img;
-//    private LoginPresenter loginPresenter;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_login);
-//        init();
-//
-//    }
-//
-//    private void init() {
-//
-//        username = (EditText) findViewById(R.id.username);
-//        password = (EditText) findViewById(R.id.pass);
-//        img = (ImageView) findViewById(R.id.img);
-//
-//        login = (Button) findViewById(R.id.login);
-//        clear = (Button) findViewById(R.id.clear);
-//        upload = (Button) findViewById(R.id.upload);
-//        login.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                loginPresenter.login();
-//            }
-//        });
-//
-//        clear.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                loginPresenter.loginOut();
-//            }
-//        });
-//        upload.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                toShowCamera();
-//            }
-//        });
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        return username.getText().toString();
-//    }
-//
-//    @Override
-//    public String getPassword() {
-//        return password.getText().toString();
-//    }
-//
-//    @Override
-//    public void loginBack(Object obj) {
-//        Gson gson = new Gson();
-//        UserBean userBean = gson.fromJson(obj.toString(), UserBean.class);
-//        MyApplication.getInstance().setUserDataBean(userBean.getJson());
-//        PreferenceUtil.putString(Constant.USERNAME, userBean.getJson().getUsername());
-//        PreferenceUtil.putString(Constant.PASSWORD, userBean.getJson().getPassword());
-//        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-//        startActivity(intent);
-//        finish();
-//    }
-//
-//    /**
-//     * 打开相册选择页面
-//     */
-//    private ArrayList<String> mSelectPath ;
-//
-//    private void toShowCamera() {
-//        int selectedMode = MultiImageSelectorActivity.MODE_SINGLE;
-//        boolean showCamera = true;
-//        // int maxNum = picSizes;
-//        Intent intent = new Intent(LoginActivity.this,
-//                MultiImageSelectorActivity.class);
-//        intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA,
-//                showCamera);
-//        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 1);
-//        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE,
-//                selectedMode);
-//        if (mSelectPath != null && mSelectPath.size() > 0) {
-//            intent.putExtra(
-//                    MultiImageSelectorActivity.EXTRA_DEFAULT_SELECTED_LIST,
-//                    mSelectPath);
-//        }
-//        startActivityForResult(intent, 1111);
-//    }
-//
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        switch (requestCode) {
-//            case 1111:
-//                if (resultCode == RESULT_OK) {
-//                    mSelectPath = data
-//                            .getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-//                    Bitmap imageBitmap = null;
-//                    try {
-//                        imageBitmap = ImageUtils.revitionImageSize(mSelectPath
-//                                .get(0));
-//                        uploadFile(mSelectPath
-//                                .get(0));
-//                    } catch (IOException e) {
-//                        // TODO Auto-generated catch block
-//                        e.printStackTrace();
-//                    }
-//                    img.setImageBitmap(imageBitmap);
-//                }
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-//
-//
-//    /**
-//     * 上传图片
-//     *
-//     * @param filepath
-//     */
-//    private void uploadFile(final String filepath) {
-//        // PubUtils.showTipDialog(UploadPhotoActivity.this, "图片上传中...");
-////        String fileMimeType = PubUtils.getImgRealMimeType(PubUtils
-////                .getFileFormat(filepath));
-////        byte[] imgBytes = ImageUtils.File2Bytes(filepath);
-//        Intent i = new Intent(LoginActivity.this, UploadFileActivity.class);
-//        i.putExtra("file_path", filepath);
-//        startActivity(i);
-//
-//    }
 
     private static final String TAG = "LoginActivity";
     private String username;
@@ -200,67 +62,79 @@ public class LoginActivity extends AppCompatActivity {
         reqLogin();
     }
 
+    /**
+     * 获取位置信息并登录
+     */
     private void reqLogin() {
-        String url = Constant.SERVER_IP + "Userfeature/userLogin";
-        username = input_name.getText().toString();
-        password = input_password.getText().toString();
-        String clientId = MyApplication.getInstance().getClientId();
-        OkHttpUtils
-                .post()
-                .url(url)
-                .addParams("phone", input_name.getText().toString())//
-                .addParams("password", input_password.getText().toString())//
-                .addParams("clientId", clientId)//
-                .build()
-                .execute(
-//                        new GenericsCallback<UserBean>(new JsonGenericsSerializator()) {
-//                    @Override
-//                    public void onError(Call call, Exception e, int id) {
-//                    }
-//
-//                    @Override
-//                    public void onResponse(UserBean userBean, int id) {
-//                        MyApplication.getInstance().setUserDataBean(userBean.getData());
-//                        PreferenceUtil.putString(Constant.USERNAME, username);
-//                        PreferenceUtil.putString(Constant.PASSWORD, password);
-//                        PushManager.getInstance().bindAlias(getApplicationContext(), userBean.getData().getUserId());
-//                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-//                        startActivity(intent);
-//                        EventBus.getDefault().post(new LoginEvent(LoginEvent.TYPE_LOGIN_SUCCESS));
-//                        finish();
-//                    }
-//                });
-
-
-                        new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        L.d("Splash", e.toString());
-                        cloudProgressDialog.cancel();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        cloudProgressDialog.cancel();
-                        Gson gson = new Gson();
-                        UserBean userBean = gson.fromJson(response, UserBean.class);
-                        MyApplication.getInstance().setUserDataBean(userBean.getData());
-                        PreferenceUtil.putString(Constant.USERNAME, username);
-                        PreferenceUtil.putString(Constant.PASSWORD, password);
-                        PushManager.getInstance().bindAlias(getApplicationContext(), userBean.getData().getUserId());
-                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                        EventBus.getDefault().post(new LoginEvent(LoginEvent.TYPE_LOGIN_SUCCESS));
-                        finish();
-                    }
-                });
+        MyApplication.getInstance().startLocationService(mListener);
     }
-//
-//    @Override
-//    public void onBackPressed() {
-//        // disable going back to the MainActivity
-//        moveTaskToBack(true);
-//    }
+    int count_login = 1;
+    int count_loc = 1;
+    boolean isFirstIn =true;
+    /**
+     * 定位结果回调，重写onReceiveLocation方法，可以直接拷贝如下代码到自己工程中修改
+     */
+    private BDLocationListener mListener = new BDLocationListener() {
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            // TODO Auto-generated method stub
+            if (isFirstIn) {
+                if (null != location && location.getLocType() != BDLocation.TypeServerError) {
+
+                    String url = Constant.SERVER_IP + "Userfeature/userLogin";
+                    username = input_name.getText().toString();
+                    password = input_password.getText().toString();
+                    String clientId = MyApplication.getInstance().getClientId();
+                    OkHttpUtils
+                            .post()
+                            .url(url)
+                            .addParams("phone", input_name.getText().toString())//
+                            .addParams("password", input_password.getText().toString())//
+                            .addParams("latitude", location.getLatitude() + "")
+                            .addParams("longitude", location.getLongitude() + "")
+                            .addParams("street", location.getStreet())
+                            .addParams("clientId", clientId)//
+                            .build()
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onError(Call call, Exception e, int id) {
+                                    L.d("Splash", e.toString());
+//                                    cloudProgressDialog.cancel();
+                                    MyApplication.getInstance().stopLocationService();
+                                    MyToast.show(LoginActivity.this, e+"", 1500);
+                                }
+
+                                @Override
+                                public void onResponse(String response, int id) {
+//                                    cloudProgressDialog.cancel();
+                                    Gson gson = new Gson();
+                                    UserBean userBean = gson.fromJson(response, UserBean.class);
+                                    if("0".equals(userBean.getStatus())){
+                                        MyApplication.getInstance().setUserDataBean(userBean.getData());
+                                        PreferenceUtil.putString(Constant.USERNAME, username);
+                                        PreferenceUtil.putString(Constant.PASSWORD, password);
+                                        PushManager.getInstance().bindAlias(getApplicationContext(), userBean.getData().getUserId());
+                                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                        startActivity(intent);
+                                        EventBus.getDefault().post(new LoginEvent(LoginEvent.TYPE_LOGIN_SUCCESS));
+                                        isFirstIn = false;
+                                        MyApplication.getInstance().stopLocationService();
+                                        finish();
+                                    }else{
+                                        MyToast.show(LoginActivity.this, userBean.getMessage(), 1500);
+                                    }
+                                }
+                            });
+                }
+
+                L.d("LoginActivity", "登录请求了 " + count_login++ + " 次");
+            }
+            L.d("LoginActivity", "地理位置刷新了 " + count_loc++ + " 次");
+        }
+
+    };
+
 
     public boolean validate() {
         boolean valid = true;

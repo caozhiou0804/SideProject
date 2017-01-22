@@ -10,9 +10,11 @@ import android.widget.EditText;
 import com.google.gson.Gson;
 import com.junit.caozhiou.sideproject.R;
 import com.junit.caozhiou.sideproject.constant.Constant;
+import com.junit.caozhiou.sideproject.entity.BaseBean;
 import com.junit.caozhiou.sideproject.log.L;
 import com.junit.caozhiou.sideproject.okhttputil.OkHttpUtils;
 import com.junit.caozhiou.sideproject.okhttputil.callback.StringCallback;
+import com.junit.caozhiou.sideproject.util.MyToast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -62,14 +64,20 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         L.d("Splash", e.toString());
+                        MyToast.show(RegisterActivity.this, e+"", 1500);
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
                         Gson gson = new Gson();
-                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        BaseBean baseBean = gson.fromJson(response,BaseBean.class);
+                        if ("0".equals(baseBean.getStatus())) {
+                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            MyToast.show(RegisterActivity.this, baseBean.getMessage(), 1500);
+                        }
 
                     }
                 });

@@ -24,13 +24,12 @@ import com.junit.caozhiou.sideproject.activity.PersonalInfoActivity;
 import com.junit.caozhiou.sideproject.activity.SettingActivity;
 import com.junit.caozhiou.sideproject.adapter.PersonalSettingAdapter;
 import com.junit.caozhiou.sideproject.app.MyApplication;
-import com.junit.caozhiou.sideproject.entity.AnyEvent;
+import com.junit.caozhiou.sideproject.entity.PersonInfoEvent;
 import com.junit.caozhiou.sideproject.entity.PersonalLeftData;
 import com.junit.caozhiou.sideproject.entity.UserDataBean;
 import com.junit.caozhiou.sideproject.okhttputil.OkHttpUtils;
 import com.junit.caozhiou.sideproject.okhttputil.callback.StringCallback;
 import com.junit.caozhiou.sideproject.util.ImageUtils;
-import com.junit.caozhiou.sideproject.util.MyToast;
 
 import net.qiujuer.genius.blur.StackBlur;
 
@@ -70,8 +69,7 @@ public class PersonLeftFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_person_left, container, false);
         ButterKnife.bind(this, view);
-        UserDataBean userBean = MyApplication.getInstance().getUserDataBean();
-        initView(userBean);
+        initView();
         //注册
         if (null != EventBus.getDefault())
             EventBus.getDefault().register(this);
@@ -80,14 +78,16 @@ public class PersonLeftFragment extends Fragment {
 
     }
 
-    protected void initView(final UserDataBean userDataBean) {
+    protected void initView() {
+        UserDataBean userDataBean = MyApplication.getInstance().getUserDataBean();
+        Bitmap newBitmap = StackBlur.blur(ImageUtils.drawableToBitmap(getResources().getDrawable(R.drawable.jr1)), 30, false);
+        BitmapDrawable drawable = new BitmapDrawable(getResources(), newBitmap);
+        ll_left_bg.setBackground(drawable);
         if (null != userDataBean) {
             if (!TextUtils.isEmpty(userDataBean.getHead_picurl())) {
                 sdv_person_icon.setImageURI(Uri.parse(userDataBean.getHead_picurl()));
                 //本地图片
-                Bitmap newBitmap = StackBlur.blur(ImageUtils.drawableToBitmap(getResources().getDrawable(R.drawable.jr1)), 30, false);
-                BitmapDrawable drawable = new BitmapDrawable(getResources(), newBitmap);
-                ll_left_bg.setBackground(drawable);
+
 //                new Thread(new Runnable() {
 //                    @Override
 //                    public void run() {
@@ -205,10 +205,9 @@ public class PersonLeftFragment extends Fragment {
     }
 
     @Subscribe
-    public void onEventMainThread(AnyEvent event) {
-
-        MyToast.show(getActivity(), event.getDiscribe(), MyToast.LENGTH_LONG);
-
+    public void onEventMainThread(PersonInfoEvent event) {
+        if (!TextUtils.isEmpty(event.getType()) && PersonInfoEvent.UPDATE_INFO.equals(event.getType()))
+            initView();
     }
 
     @Override

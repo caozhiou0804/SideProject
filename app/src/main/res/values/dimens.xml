@@ -41,5 +41,5 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
 
     <!-- Default Parallax ImageView Height  -->
-    <dimen name="size_default_height">160dp</dimen>
+    <dimen name="size_default_height">280dp</dimen>
 </resources>

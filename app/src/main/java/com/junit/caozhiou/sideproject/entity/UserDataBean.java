@@ -22,6 +22,14 @@ public class UserDataBean {
     private String username;
     private String head_picurl;
     private String sex;
+    private String birth_day;
+    private String latitude;
+    private String longitude;
+    private String street;
+
+    private String age;//年龄
+    private String xingzuo;//星座
+    private String active_time;//活跃时间
     public String getPassword() {
         return password;
     }
@@ -84,5 +92,61 @@ public class UserDataBean {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public String getBirth_day() {
+        return birth_day;
+    }
+
+    public void setBirth_day(String birth_day) {
+        this.birth_day = birth_day;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getXingzuo() {
+        return xingzuo;
+    }
+
+    public void setXingzuo(String xingzuo) {
+        this.xingzuo = xingzuo;
+    }
+
+    public String getActive_time() {
+        return active_time;
+    }
+
+    public void setActive_time(String active_time) {
+        this.active_time = active_time;
     }
 }

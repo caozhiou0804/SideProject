@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.junit.caozhiou.sideproject.R;
+import com.junit.caozhiou.sideproject.app.MyApplication;
 import com.junit.caozhiou.sideproject.entity.UserDataBean;
+import com.junit.caozhiou.sideproject.util.DateUtil;
 import com.junit.caozhiou.sideproject.util.ScreenUtil;
 import com.junit.caozhiou.sideproject.view.SwipeItemLayout;
 import com.junit.caozhiou.sideproject.view.viewpager.AdLoopView;
@@ -22,6 +27,7 @@ import com.junit.caozhiou.sideproject.view.viewpager.internal.ItemData;
 import com.junit.caozhiou.sideproject.view.viewpager.internal.LoopData;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,6 +56,7 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
      * 当前处于打开状态的item
      */
     private List<SwipeItemLayout> mOpenedSil = new ArrayList<>();
+
     public SimpleRecyclerViewAdapter(Context context, OnRecyclerItemClickListener onRecyclerItemClickListener, List<UserDataBean> userBeanList) {
         this.mInflater = LayoutInflater.from(context);
         this.userBeanList = userBeanList;
@@ -100,7 +107,7 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 //            });
             return viewHolder;
         } else if (viewType == TYPE_GRIDVIEW) {
-            final View view = mInflater.inflate(R.layout.item_contact, parent, false);
+            final View view = mInflater.inflate(R.layout.item_nearby_person, parent, false);
             FootViewHolder viewHolder = new FootViewHolder(view);
             return viewHolder;
         } else if (viewType == TYPE3) {
@@ -165,37 +172,99 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             viewPagerViewHolder.adloop_act_adloopview.refreshData(loopData);
             viewPagerViewHolder.adloop_act_adloopview.startAutoLoop();
         } else if (holder instanceof FootViewHolder) {//
-             FootViewHolder footViewHolder = (FootViewHolder) holder;
-            final SwipeItemLayout swipeRoot = footViewHolder.swipeItemLayout;
-            footViewHolder.item_contact_title.setText(userBeanList.get(position - 1).getUsername());
-            footViewHolder.item_contact_delete.setText("关注");
-
-            footViewHolder.item_contact_delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onRecyclerItemClickListener.onFollowClick(userBeanList.get(position - 1), position - 1);
-                    closeOpenedSwipeItemLayoutWithAnim();
+            FootViewHolder footViewHolder = (FootViewHolder) holder;
+//            final SwipeItemLayout swipeRoot = footViewHolder.swipeItemLayout;
+            UserDataBean userDataBean = userBeanList.get(position - 1);
+            if (null != userDataBean) {
+                if (!TextUtils.isEmpty(userDataBean.getUsername())) {//姓名
+                    footViewHolder.tv_user_name_personal.setText(userDataBean.getUsername());
                 }
-            });
-
-            swipeRoot.setDelegate(new SwipeItemLayout.SwipeItemLayoutDelegate() {
-                @Override
-                public void onSwipeItemLayoutOpened(SwipeItemLayout swipeItemLayout) {
-                    closeOpenedSwipeItemLayoutWithAnim();
-                    mOpenedSil.add(swipeItemLayout);
+                if (!TextUtils.isEmpty(userDataBean.getSex())) {//性别
+                    if ("0".equals(userDataBean.getSex())) {//0 男 1 女
+                        footViewHolder.iv_user_sex_personal.setImageResource(R.drawable.ic_sex_male);
+                    } else {
+                        footViewHolder.iv_user_sex_personal.setImageResource(R.drawable.ic_sex_female);
+                    }
                 }
 
-                @Override
-                public void onSwipeItemLayoutClosed(SwipeItemLayout swipeItemLayout) {
-                    mOpenedSil.remove(swipeItemLayout);
+                if (!TextUtils.isEmpty(userDataBean.getAge())) {//年龄
+                    footViewHolder.tv_user_age_personal.setText(userDataBean.getAge());
+                }
+                if (!TextUtils.isEmpty(userDataBean.getXingzuo())) {//星座
+                    footViewHolder.tv_user_xingzuo_personal.setText(userDataBean.getXingzuo());
+                }
+                String locName = "";//地理位置
+                double locDistance = 0;//距离当前用户
+                String active_time = "";
+                if (!TextUtils.isEmpty(userDataBean.getStreet())) {
+                    locName = userDataBean.getStreet();
                 }
 
-                @Override
-                public void onSwipeItemLayoutStartOpen(SwipeItemLayout swipeItemLayout) {
-                    closeOpenedSwipeItemLayoutWithAnim();
+                if (!TextUtils.isEmpty(userDataBean.getActive_time())) {
+                    long timeLast = DateUtil.getTimeMillisBetweenTwoDate(new Date(),
+                            DateUtil.parseToDate(userDataBean.getActive_time(), DateUtil.FORMATER_YYYY_MM_DD_HH_MM_SS));//成员登录持续时间
+                    if (timeLast > DateUtil.oneDayMillis) {
+                        active_time = "超过一天";
+                    } else if (timeLast > DateUtil.oneHourMillis && timeLast <= DateUtil.oneDayMillis) {
+                        active_time = timeLast / DateUtil.oneHourMillis + "小时前活跃";
+                    } else if (timeLast > DateUtil.oneMinuteMillis && timeLast <= DateUtil.oneHourMillis) {
+                        active_time = timeLast / DateUtil.oneMinuteMillis + "分钟前活跃";
+                    } else {
+                        active_time = "刚刚在线";
+                    }
                 }
-            });
+                if (!TextUtils.isEmpty(userDataBean.getLatitude()) && !TextUtils.isEmpty(userDataBean.getLongitude())
+                        && !TextUtils.isEmpty(MyApplication.getInstance().getUserDataBean().getLongitude())
+                        && !TextUtils.isEmpty(MyApplication.getInstance().getUserDataBean().getLatitude())) {
+                    try {
+                        double mLongitude = Double.parseDouble(MyApplication.getInstance().getUserDataBean().getLongitude());
+                        double mLatitude = Double.parseDouble(MyApplication.getInstance().getUserDataBean().getLatitude());
+                        double otherLongitude = Double.parseDouble(userDataBean.getLongitude());
+                        double otherLatitude = Double.parseDouble(userDataBean.getLatitude());
+                        locDistance = DistanceUtil.getDistance(new LatLng(otherLongitude, otherLatitude), new LatLng(mLongitude, mLatitude));
+                        if (locDistance >= 1) {
+                            footViewHolder.tv_user_location_personal.setText(locName + "(距离" + (int) locDistance + "千米), " + active_time);
+                        } else {
+                            footViewHolder.tv_user_location_personal.setText(locName + "(距离" + (int) (locDistance * 1000) + "米), " + active_time);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
         }
+
+
+//            footViewHolder.item_contact_delete.setText("关注");
+
+//            footViewHolder.item_contact_delete.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    onRecyclerItemClickListener.onFollowClick(userDataBean, position - 1);
+//                    closeOpenedSwipeItemLayoutWithAnim();
+//                }
+//            });
+
+//            swipeRoot.setDelegate(new SwipeItemLayout.SwipeItemLayoutDelegate() {
+//                @Override
+//                public void onSwipeItemLayoutOpened(SwipeItemLayout swipeItemLayout) {
+//                    closeOpenedSwipeItemLayoutWithAnim();
+//                    mOpenedSil.add(swipeItemLayout);
+//                }
+//
+//                @Override
+//                public void onSwipeItemLayoutClosed(SwipeItemLayout swipeItemLayout) {
+//                    mOpenedSil.remove(swipeItemLayout);
+//                }
+//
+//                @Override
+//                public void onSwipeItemLayoutStartOpen(SwipeItemLayout swipeItemLayout) {
+//                    closeOpenedSwipeItemLayoutWithAnim();
+//                }
+//            });
+//        }
 //        startScaleAndTranslate(holder.itemView);
     }
 
@@ -270,15 +339,22 @@ public class SimpleRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
      * 底部FootView布局
      */
     public static class FootViewHolder extends RecyclerView.ViewHolder {
-        private TextView item_contact_title;
-        private TextView item_contact_delete;
-        private SwipeItemLayout swipeItemLayout;
+        private TextView tv_user_name_personal;//姓名
+        private ImageView iv_user_sex_personal;//性别
+        private TextView tv_user_age_personal;//年龄
+        private TextView tv_user_xingzuo_personal;//星座
+        private TextView tv_user_location_personal;//位置信息和活跃信息
+
+//        private SwipeItemLayout swipeItemLayout;
 
         public FootViewHolder(View view) {
             super(view);
-            item_contact_title = (TextView) view.findViewById(R.id.item_contact_title);
-            item_contact_delete = (TextView) view.findViewById(R.id.item_contact_delete);
-            swipeItemLayout = (SwipeItemLayout) view.findViewById(R.id.item_contact_swipe_root);
+            tv_user_name_personal = (TextView) view.findViewById(R.id.tv_user_name_personal);
+            iv_user_sex_personal = (ImageView) view.findViewById(R.id.iv_user_sex_personal);
+            tv_user_age_personal = (TextView) view.findViewById(R.id.tv_user_age_personal);
+            tv_user_xingzuo_personal = (TextView) view.findViewById(R.id.tv_user_xingzuo_personal);
+            tv_user_location_personal = (TextView) view.findViewById(R.id.tv_user_location_personal);
+//            swipeItemLayout = (SwipeItemLayout) view.findViewById(R.id.item_contact_swipe_root);
         }
     }
 

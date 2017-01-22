@@ -12,6 +12,7 @@ import com.junit.caozhiou.sideproject.entity.AnyEvent;
 import com.junit.caozhiou.sideproject.entity.UploadPhotoBean;
 import com.junit.caozhiou.sideproject.okhttputil.OkHttpUtils;
 import com.junit.caozhiou.sideproject.okhttputil.callback.StringCallback;
+import com.junit.caozhiou.sideproject.util.MyToast;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -75,6 +76,7 @@ public class UploadFileActivity extends AppCompatActivity {
 
         @Override
         public void onError(Call call, Exception e, int id) {
+            MyToast.show(UploadFileActivity.this, e+"", 1500);
             e.printStackTrace();
         }
 
@@ -82,7 +84,11 @@ public class UploadFileActivity extends AppCompatActivity {
         public void onResponse(String response, int id) {
             Gson gson = new Gson();
             UploadPhotoBean uploadPhotoBean = gson.fromJson(response, UploadPhotoBean.class);
-            EventBus.getDefault().post(new AnyEvent(uploadPhotoBean.getPicUrl()));
+            if ("0".equals(uploadPhotoBean.getStatus())) {
+                EventBus.getDefault().post(new AnyEvent(uploadPhotoBean.getPicUrl()));
+            } else {
+                MyToast.show(UploadFileActivity.this, uploadPhotoBean.getMessage(), 1500);
+            }
 //            switch (id) {
 //                case 100:
 //                    Toast.makeText(UploadFileActivity.this, "http", Toast.LENGTH_SHORT).show();

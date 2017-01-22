@@ -1,134 +1,262 @@
 package com.junit.caozhiou.sideproject.activity;
 
-import android.content.res.Configuration;
-import android.graphics.Color;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
 import com.junit.caozhiou.sideproject.R;
-import com.junit.caozhiou.sideproject.activity.tool.SlidingTabLayout;
-import com.junit.caozhiou.sideproject.activity.tool.ViewPagerAdapter;
+import com.junit.caozhiou.sideproject.app.MyApplication;
+import com.junit.caozhiou.sideproject.constant.Constant;
+import com.junit.caozhiou.sideproject.entity.PersonInfoEvent;
+import com.junit.caozhiou.sideproject.entity.UserBean;
+import com.junit.caozhiou.sideproject.entity.UserDataBean;
+import com.junit.caozhiou.sideproject.okhttputil.OkHttpUtils;
+import com.junit.caozhiou.sideproject.okhttputil.callback.StringCallback;
+import com.junit.caozhiou.sideproject.util.DateUtil;
+import com.junit.caozhiou.sideproject.util.ImageUtils;
+import com.junit.caozhiou.sideproject.util.MyToast;
+import com.junit.caozhiou.sideproject.view.multi_image_selector.MultiImageSelectorActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Request;
 
 
-public class PersonalInfoActivity extends ActionBarActivity {
+public class PersonalInfoActivity extends AppCompatActivity {
 
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle drawerToggle;
+    @Bind(R.id.btn_to_edit_info)
+    Button btn_to_edit_info;
+    @Bind(R.id.sdv_my_info_icon)
+    SimpleDraweeView sdv_my_info_icon;
 
-    private ListView mDrawerList;
-    ViewPager pager;
-    private String[] titles = new String[]{"Sample Tab 1", "Sample Tab 2", "Sample Tab 3", "Sample Tab 4"
-            , "Sample Tab 5", "Sample Tab 6", "Sample Tab 7", "Sample Tab 8"};
-    private Toolbar toolbar;
+    @Bind(R.id.tv_user_name_personal)
+    TextView tv_user_name_personal;
+    @Bind(R.id.iv_user_sex_personal)
+    ImageView iv_user_sex_personal;
+    @Bind(R.id.tv_user_age_personal)
+    TextView tv_user_age_personal;
+    @Bind(R.id.tv_user_xingzuo_personal)
+    TextView tv_user_xingzuo_personal;
+    @Bind(R.id.tv_user_location_personal)
+    TextView tv_user_location_personal;
 
-    SlidingTabLayout slidingTabLayout;
+    private static final int CHOOSE_PHOTO = 0x01;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_info);
+        ButterKnife.bind(this);
+        initView();
+        //注册
+        if (null != EventBus.getDefault())
+            EventBus.getDefault().register(this);
+    }
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.navdrawer);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            toolbar.setNavigationIcon(R.drawable.icon_inner);
-        }
-        pager = (ViewPager) findViewById(R.id.viewpager);
-        slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-        pager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), titles));
+    private void initView() {
 
-        slidingTabLayout.setViewPager(pager);
-        slidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
-            @Override
-            public int getIndicatorColor(int position) {
-                return Color.WHITE;
+        UserDataBean userDataBean = MyApplication.getInstance().getUserDataBean();
+        if (null != userDataBean) {
+
+            if (!TextUtils.isEmpty(userDataBean.getHead_picurl())) {
+                sdv_my_info_icon.setImageURI(Uri.parse(userDataBean.getHead_picurl()));
             }
-        });
-        drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
-        mDrawerLayout.setDrawerListener(drawerToggle);
-        String[] values = new String[]{
-                "DEFAULT", "RED", "BLUE", "MATERIAL GREY"
-        };
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, values);
-        mDrawerList.setAdapter(adapter);
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                switch (position) {
-                    case 0:
-                        mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
-                        toolbar.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
-                        slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
-                        mDrawerLayout.closeDrawer(Gravity.START);
-                        break;
-                    case 1:
-                        mDrawerList.setBackgroundColor(getResources().getColor(R.color.red));
-                        toolbar.setBackgroundColor(getResources().getColor(R.color.red));
-                        slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.red));
-                        mDrawerLayout.closeDrawer(Gravity.START);
-
-                        break;
-                    case 2:
-                        mDrawerList.setBackgroundColor(getResources().getColor(R.color.blue));
-                        toolbar.setBackgroundColor(getResources().getColor(R.color.blue));
-                        slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.blue));
-                        mDrawerLayout.closeDrawer(Gravity.START);
-
-                        break;
-                    case 3:
-                        mDrawerList.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
-                        toolbar.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
-                        slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
-                        mDrawerLayout.closeDrawer(Gravity.START);
-
-                        break;
+            if (!TextUtils.isEmpty(userDataBean.getUsername())) {
+                tv_user_name_personal.setText(userDataBean.getUsername());
+            }
+            if (!TextUtils.isEmpty(userDataBean.getSex())) {//0 男，1 女
+                if ("0".equals(userDataBean.getSex())) {
+                    iv_user_sex_personal.setImageResource(R.drawable.ic_sex_male);
+                } else {
+                    iv_user_sex_personal.setImageResource(R.drawable.ic_sex_male);
+                }
+            }
+            if (!TextUtils.isEmpty(userDataBean.getAge())) {
+                tv_user_age_personal.setText(userDataBean.getAge());
+            }
+            if (!TextUtils.isEmpty(userDataBean.getXingzuo())) {
+                tv_user_xingzuo_personal.setText(userDataBean.getXingzuo());
+            }
+            if (!TextUtils.isEmpty(userDataBean.getActive_time())) {
+                long timeLast = DateUtil.getTimeMillisBetweenTwoDate(new Date(),
+                        DateUtil.parseToDate(userDataBean.getActive_time(), DateUtil.FORMATER_YYYY_MM_DD_HH_MM_SS));//成员登录持续时间
+                String active_time = "";
+                if (timeLast > DateUtil.oneDayMillis) {
+                    active_time = "超过一天";
+                } else if (timeLast > DateUtil.oneHourMillis && timeLast <= DateUtil.oneDayMillis) {
+                    active_time = timeLast / DateUtil.oneHourMillis + "小时前活跃";
+                } else if (timeLast > DateUtil.oneMinuteMillis && timeLast <= DateUtil.oneHourMillis) {
+                    active_time = timeLast / DateUtil.oneMinuteMillis + "分钟前活跃";
+                } else {
+                    active_time = "刚刚在线";
                 }
 
+                tv_user_location_personal.setText("0米, " + active_time);
             }
-        });
+        }
+    }
+
+    @OnClick(R.id.btn_to_edit_info)
+    public void editInfo(View view) {
+        Intent intent = new Intent(PersonalInfoActivity.this, EditPersonInfoActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.sdv_my_info_icon)
+    public void updateHeadPhoto(View view) {
+        toShowCamera();
+    }
+
+    /**
+     * 打开相册选择页面
+     */
+    private ArrayList<String> mSelectPath;
+
+    private void toShowCamera() {
+        int selectedMode = MultiImageSelectorActivity.MODE_SINGLE;
+        boolean showCamera = true;
+        // int maxNum = picSizes;
+        Intent intent = new Intent(PersonalInfoActivity.this,
+                MultiImageSelectorActivity.class);
+        intent.putExtra(MultiImageSelectorActivity.EXTRA_SHOW_CAMERA,
+                showCamera);
+        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_COUNT, 1);
+        intent.putExtra(MultiImageSelectorActivity.EXTRA_SELECT_MODE,
+                selectedMode);
+        if (mSelectPath != null && mSelectPath.size() > 0) {
+            intent.putExtra(
+                    MultiImageSelectorActivity.EXTRA_DEFAULT_SELECTED_LIST,
+                    mSelectPath);
+        }
+        startActivityForResult(intent, CHOOSE_PHOTO);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case CHOOSE_PHOTO:
+                if (resultCode == RESULT_OK) {
+                    mSelectPath = data
+                            .getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+                    Bitmap imageBitmap = null;
+                    try {
+                        imageBitmap = ImageUtils.revitionImageSize(mSelectPath
+                                .get(0));
+                        uploadFile(mSelectPath
+                                .get(0));
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            return true;
+    /**
+     * 上传图片
+     *
+     * @param filepath
+     */
+    private void uploadFile(String filepath) {
+        Bitmap getbitm = ImageUtils.getBitMapFromFile(filepath);
+        // 获取压缩后图片
+        String path = ImageUtils.compressImage(getbitm, 200);
+
+        if (getbitm != null && !getbitm.isRecycled()) {
+            // 回收并且置为null
+            getbitm.recycle();
+            getbitm = null;
+        }
+        System.gc();
+        File file = new File(path);
+        String url = Constant.SERVER_IP + "Userfeature/uploadFile";
+        String userId = "";
+        if (null != MyApplication.getInstance().getUserDataBean()
+                && !TextUtils.isEmpty(MyApplication.getInstance().getUserDataBean().getUserId())) {
+            userId = MyApplication.getInstance().getUserDataBean().getUserId();
+        }
+        OkHttpUtils.post()//
+                .addFile("myfile", file.getName(), file)//
+                .url(url)
+                .addParams("userId", userId)
+                .id(100)//
+//                .params(params)//
+//                .headers(headers)//
+                .build()//
+                .execute(new MyStringCallback());
+    }
+
+
+    class MyStringCallback extends StringCallback {
+        @Override
+        public void onBefore(Request request, int id) {
         }
 
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(Gravity.START);
-                return true;
+        @Override
+        public void onAfter(int id) {
         }
 
-        return super.onOptionsItemSelected(item);
+        @Override
+        public void onError(Call call, Exception e, int id) {
+            MyToast.show(PersonalInfoActivity.this, e + "", 1500);
+            e.printStackTrace();
+        }
+
+        @Override
+        public void onResponse(String response, int id) {
+            Gson gson = new Gson();
+            UserBean userBean = gson.fromJson(response, UserBean.class);
+            if (("0").equals(userBean.getStatus())) {
+                MyApplication.getInstance().setUserDataBean(userBean.getData());
+                PersonInfoEvent personInfoEvent = new PersonInfoEvent(PersonInfoEvent.UPDATE_INFO);
+                personInfoEvent.setUserDataBean(userBean.getData());
+                EventBus.getDefault().post(personInfoEvent);
+            }
+            MyToast.show(PersonalInfoActivity.this, userBean.getMessage(), 1500);
+
+        }
+
+        @Override
+        public void inProgress(final float progress, long total, int id) {
+//            int pro = (int) (progress * 100);
+//            uploadProgress.setProgress(pro);
+        }
     }
 
+    @Subscribe
+    public void onEventMainThread(PersonInfoEvent event) {
+
+        MyToast.show(PersonalInfoActivity.this, event.getType(), MyToast.LENGTH_LONG);
+        if (!TextUtils.isEmpty(event.getType()) && PersonInfoEvent.UPDATE_INFO.equals(event.getType()))
+            initView();
+    }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
-    }
-
 }

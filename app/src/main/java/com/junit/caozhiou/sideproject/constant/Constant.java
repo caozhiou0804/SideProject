@@ -5,6 +5,7 @@ package com.junit.caozhiou.sideproject.constant;
  */
 
 public class Constant {
+//    public static final String SERVER_IP= "http://weixin.dhyangche.com/szWxTest/";//外网域名
     public static final String SERVER_IP= "http://192.168.111.2:8080/WebApp/";//公司ip
 //    public static final String SERVER_IP= "http://192.168.1.101:8080/WebApp/";//宿舍ip
 
